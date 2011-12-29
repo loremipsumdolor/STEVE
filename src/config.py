@@ -7,11 +7,11 @@ Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 import sys
 import os.path
-from ConfigParser import RawConfigParser as ConfParser
+from ConfigParser import RawConfigParser
 from ConfigParser import Error
 
 def configvar():
-    parser = ConfParser()
+    parser = RawConfigParser()
     fileopen = open("config.ini")
     if fileopen.read().startswith("\xef\xbb\xbf"):
         print "Error: File saved as Unicode."
@@ -40,52 +40,40 @@ def configvar():
             for s in sections:
                 if parser.has_option(s, "emailaddress"):
                     if parser.get(s, "emailaddress") == 'test@example.com':
-                        print "Error: Default values detected."
-                        print "To fix: Edit values in config.ini."
+                        print "Error: Default value detected."
+                        print "To fix: Edit value 'emailaddress' in config.ini."
                         sys.exit()
                     else:
                         login.append(parser.get(s, "emailaddress"))
-                        email = parser.get(s, "emailaddress")
                 else:
                     print "Error: Email address not found."
-                    print "To fix: Edit values in config.ini."
+                    print "To fix: Edit value 'emailaddress' in config.ini."
                     sys.exit()
                 if parser.has_option(s, "password"):
                     if parser.get(s, "password") == 'password':
-                        print "Error: Default values detected."
-                        print "To fix: Edit values in config.ini."
+                        print "Error: Default value detected."
+                        print "To fix: Edit value 'password' in config.ini."
                         sys.exit()
                     else:
                         login.append(parser.get(s, "password"))
                 else:
                     print "Error: Password not found."
-                    print "To fix: Edit values in config.ini."
-                    sys.exit()
-                if parser.has_option(s, "fbemail"):
-                    if parser.get(s, "fbemail") == 'example@m.facebook.com':
-                        print "Error: Default values detected."
-                        print "To fix: Edit values in config.ini."
-                        sys.exit()
-                    else:
-                        login.append(parser.get(s, "fbemail"))
-                else:
-                    print "Error: Facebook email not found."
-                    print "To fix: Edit values in config.ini."
+                    print "To fix: Edit value 'password' in config.ini."
                     sys.exit()
                 if parser.has_option(s, "imapserver"):
                     if parser.get(s, "imapserver") == '':
-                        server = email.split("@")
-                        login.append(server[1])
-                        print "WARNING: IMAP server assumed to be imaparser." + server[1] + "."
+                        server = parser.get(s, "emailaddress").split("@")
+                        login.append('imap.' + server[1].strip("'"))
+                        print "WARNING: IMAP server assumed to be imap." + server[1].strip("'") + "."
                         print "If this is incorrect, please stop S.T.E.V.E. and change the"
                         print "value 'imapserver'."
                     else:
                         login.append(parser.get(s, "imapserver"))
                 if parser.has_option(s, "smtpserver"):
                     if parser.get(s, "smtpserver") == '':
-                        server = email.split("@")
-                        login.append(server[1])
-                        print "WARNING: SMTP server assumed to be smtparser." + server[1] + "."
+                        server = parser.get(s, "emailaddress").split("@")
+                        login.append('smtp.' + server[1].strip("'"))
+                        print "WARNING: SMTP server assumed to be smtp." + server[1].strip("'") + "."
                         print "If this is incorrect, please stop S.T.E.V.E. and change the"
                         print "value 'smtpserver'."
                     else:
@@ -94,7 +82,7 @@ def configvar():
 
 if __name__ == '__main__':
     print "S.T.E.V.E. Configuration Values"
-    parser = ConfParser()
+    parser = RawConfigParser()
     fileopen = open("config.ini")
     if fileopen.read().startswith("\xef\xbb\xbf"):
         print "Error: File saved as Unicode."
@@ -125,10 +113,7 @@ if __name__ == '__main__':
                 if parser.has_option(s, "password"):
                     #print "Password: " + parser.get(s, "password")
                     print "Password: Not displayed for security reasons."
-                    print "To display password, please uncomment line 126 and comment lines 127-128."
-                if parser.has_option(s, "fbemail"):
-                    print "Facebook Email Address: " + parser.get(s, "fbemail")
-                    print "NOTE: Facebook email should be the mobile Facebook email address."
+                    print "To display password, please uncomment line 114 and comment lines 115-116."
                 if parser.has_option(s, "imapserver"):
                     print "IMAP Server: " + parser.get(s, "imapserver")
                 if parser.has_option(s, "smtpserver"):

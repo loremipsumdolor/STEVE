@@ -1,7 +1,6 @@
 '''
 S.T.E.V.E. Email Module
-Part of the S.T.E.V.E Core
-Parses Email messages for commands
+The primary Email message exchange
 A software component of S.T.E.V.E. (Super Traversing Enigmatic Voice-commanded Engine)
 Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
@@ -9,34 +8,28 @@ Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 
 import imaplib, mailer
 
-def check(ea, pw, imap):
-    acct = imaplib.IMAP4_SSL(imap)
-    acct.login(ea, pw)
-    acct.select()
-    data = acct.search(None, 'UNSEEN')
-    acct.close()
-    acct.logout()
-    if data != ('OK', ['']):
-        return 'OK'
-    else:
-        return 'None'
-    
 def retrieve(ea, pw, imap):
     acct = imaplib.IMAP4_SSL(imap)
     acct.login(ea, pw)
     acct.select()
     typ, data = acct.search(None, 'UNSEEN')
-    c = []
-    for num in data[0].split():
-        typ, data = acct.fetch(num, '(RFC822)')
-        a = num, data[0][1]
+    if data != ['']:
+        typ, msg = acct.fetch(data[0], '(RFC822)')
+        a = data[0], msg[0][1]
         b = a[1].find('steve')
         if b != -1:
-            print a[1]
-            c.append(a[1])
+            acct.close()
+            acct.logout()
+            return a[1]
         else:
-            acct.store(num, '-FLAGS', '\\Seen')
-    return c
+            acct.store(data[0], '+FLAGS', '\\Seen')
+            acct.close()
+            acct.logout()
+            return None
+    else:
+        acct.close()
+        acct.logout()
+        return None
 
 def send(ea, pw, toea, smtp, subject, body, attach):
     msg = mailer.Message()

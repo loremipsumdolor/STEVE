@@ -1,6 +1,5 @@
 '''
 S.T.E.V.E. Command Parser
-Part of the S.T.E.V.E Core
 Builtin S.T.E.V.E. commands
 A software component of S.T.E.V.E. (Super Traversing Enigmatic Voice-commanded Engine)
 Device invented by Jacob Turner
@@ -12,3 +11,7 @@ from VideoCapture import Device
 def picture():
     eye = Device()
     eye.saveSnapshot('image.jpg', timestamp=3, boldfont=1)
+    return "Done"
+
+if __name__ == '__main__':
+    print "Not to be called directly."
