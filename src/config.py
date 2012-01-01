@@ -14,9 +14,10 @@ def configvar():
     parser = RawConfigParser()
     fileopen = open("config.ini")
     if fileopen.read().startswith("\xef\xbb\xbf"):
+        print
         print "Error: File saved as Unicode."
         print "To fix: Resave config.ini as ASCII."
-        sys.exit()
+        raw_input()
     try:
         results = parser.read("config.ini")
     except Error, msg:
@@ -27,12 +28,14 @@ def configvar():
         if results == []:
             print "Error: Could not load config.ini."
             if not os.path.exists("config.ini"):
+                print
                 print "Reason: config.ini does not exist."
                 print "To fix: Rerun index.py."
-                sys.exit()
+                raw_input()
             else:
+                print
                 print "Reason: Unknown."
-                sys.exit()
+                raw_input()
         else:
             sections = parser.sections()
             sections.sort()
@@ -40,30 +43,35 @@ def configvar():
             for s in sections:
                 if parser.has_option(s, "emailaddress"):
                     if parser.get(s, "emailaddress") == 'test@example.com':
+                        print
                         print "Error: Default value detected."
                         print "To fix: Edit value 'emailaddress' in config.ini."
-                        sys.exit()
+                        raw_input()
                     else:
                         login.append(parser.get(s, "emailaddress"))
                 else:
+                    print
                     print "Error: Email address not found."
                     print "To fix: Edit value 'emailaddress' in config.ini."
-                    sys.exit()
+                    raw_input()
                 if parser.has_option(s, "password"):
                     if parser.get(s, "password") == 'password':
+                        print
                         print "Error: Default value detected."
                         print "To fix: Edit value 'password' in config.ini."
-                        sys.exit()
+                        raw_input()
                     else:
                         login.append(parser.get(s, "password"))
                 else:
+                    print
                     print "Error: Password not found."
                     print "To fix: Edit value 'password' in config.ini."
-                    sys.exit()
+                    raw_input()
                 if parser.has_option(s, "imapserver"):
                     if parser.get(s, "imapserver") == '':
                         server = parser.get(s, "emailaddress").split("@")
                         login.append('imap.' + server[1].strip("'"))
+                        print
                         print "WARNING: IMAP server assumed to be imap." + server[1].strip("'") + "."
                         print "If this is incorrect, please stop S.T.E.V.E. and change the"
                         print "value 'imapserver'."
@@ -73,6 +81,7 @@ def configvar():
                     if parser.get(s, "smtpserver") == '':
                         server = parser.get(s, "emailaddress").split("@")
                         login.append('smtp.' + server[1].strip("'"))
+                        print
                         print "WARNING: SMTP server assumed to be smtp." + server[1].strip("'") + "."
                         print "If this is incorrect, please stop S.T.E.V.E. and change the"
                         print "value 'smtpserver'."
@@ -85,9 +94,10 @@ if __name__ == '__main__':
     parser = RawConfigParser()
     fileopen = open("config.ini")
     if fileopen.read().startswith("\xef\xbb\xbf"):
+        print
         print "Error: File saved as Unicode."
         print "To fix: Resave config.ini as ASCII."
-        sys.exit()
+        raw_input()
     try:
         results = parser.read("config.ini")
     except Error, msg:
@@ -98,12 +108,14 @@ if __name__ == '__main__':
         if results == []:
             print "Error: Could not load config.ini."
             if not os.path.exists("config.ini"):
+                print
                 print "Reason: config.ini does not exist."
                 print "To fix: Rerun index.py."
-                sys.exit()
+                raw_input()
             else:
+                print
                 print "Reason: Unknown."
-                sys.exit()
+                raw_input()
         else:
             sections = parser.sections()
             sections.sort()
@@ -113,7 +125,7 @@ if __name__ == '__main__':
                 if parser.has_option(s, "password"):
                     #print "Password: " + parser.get(s, "password")
                     print "Password: Not displayed for security reasons."
-                    print "To display password, please uncomment line 114 and comment lines 115-116."
+                    print "To display password, please uncomment line 126 and comment lines 127-128."
                 if parser.has_option(s, "imapserver"):
                     print "IMAP Server: " + parser.get(s, "imapserver")
                 if parser.has_option(s, "smtpserver"):

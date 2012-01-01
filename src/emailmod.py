@@ -6,10 +6,18 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import imaplib, mailer
+import imaplib, smtplib, string, config, os, ssl
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEBase import MIMEBase
+from email.MIMEText import MIMEText
+from email.Utils import formatdate
+from email import Encoders
 
 def retrieve(ea, pw, imap):
-    acct = imaplib.IMAP4_SSL(imap)
+    try:
+        acct = imaplib.IMAP4_SSL(imap)
+    except ssl.SSLError:
+        acct = imaplib.IMAP4(imap)
     acct.login(ea, pw)
     acct.select()
     typ, data = acct.search(None, 'UNSEEN')
@@ -31,19 +39,47 @@ def retrieve(ea, pw, imap):
         acct.logout()
         return None
 
-def send(ea, pw, toea, smtp, subject, body, attach):
-    msg = mailer.Message()
-    msg.From = ea
-    msg.To = toea
+def send(toea, subject, text):
+    login = config.configvar()
     if subject != None:
-        msg.Subject = subject
-    if body != None:
-        msg.Body = body
-    if attach != None:
-        msg.attach(attach)
-    mail = mailer.Mailer(smtp)
-    mail.login(ea, pw)
-    mail.send(msg)
-       
+        pass
+    if text != None:
+        pass
+    body = string.join((
+        "From: %s" % login[0],
+        "To: %s" % toea,
+        "Subject: %s" % subject ,
+        "",
+        text
+        ), "\r\n")
+    try:
+        mail = smtplib.SMTP_SSL(login[3])
+    except ssl.SSLError:
+        mail = smtplib.SMTP(login[3])
+    mail.login(login[0], login[1])
+    mail.sendmail(login[0], toea, body)
+    mail.quit()
+
+def sendattach(toea, subject, text, f):
+    login = config.configvar()
+    msg = MIMEMultipart()
+    msg['From'] = login[0]
+    msg['To'] = toea
+    msg['Date'] = formatdate(localtime=True)
+    msg['Subject'] = subject
+    msg.attach( MIMEText(text) )
+    part = MIMEBase('application', "octet-stream")
+    part.set_payload( open(f,"rb").read() )
+    Encoders.encode_base64(part)
+    part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(f))
+    msg.attach(part)
+    try:
+        mail = smtplib.SMTP_SSL(login[3])
+    except ssl.SSLError:
+        mail = smtplib.SMTP(login[3])
+    mail.login(login[0], login[1])
+    mail.sendmail(login[0], toea, msg.as_string())
+    mail.close()
+
 if __name__ == '__main__':
     print "Not to be called directly."

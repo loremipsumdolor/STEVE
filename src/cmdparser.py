@@ -10,8 +10,8 @@ from VideoCapture import Device
 
 def picture():
     eye = Device()
-    eye.saveSnapshot('image.jpg', timestamp=3, boldfont=1)
-    return "Done"
+    eye.saveSnapshot("image.jpg", timestamp=3, boldfont=1)
+    return
 
 if __name__ == '__main__':
     print "Not to be called directly."

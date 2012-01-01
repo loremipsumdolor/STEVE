@@ -8,6 +8,7 @@ Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 
 import emailmod, time, emailparser, config
 
+print "S.T.E.V.E."
 login = config.configvar()
 ea = login[0]
 pw = login[1]
@@ -18,6 +19,10 @@ smtp = login[3]
 while True:
     data = emailmod.retrieve(ea, pw, imap)
     if data != None:
-        emailparser.parse(data)
+        parse = emailparser.parse(data)
+        if parse[0] == "image.jpg":
+            emailmod.sendattach(parse[1], None, None, parse[0])
+        else:
+            time.sleep(10)
     else:
         time.sleep(10)
