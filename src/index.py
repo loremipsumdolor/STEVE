@@ -6,9 +6,15 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import emailmod, time, emailparser, config
+import emailmod, time, emailparser, config, update
 
 print "S.T.E.V.E."
+ucheck = update.check()
+if ucheck == 'Update':
+    print
+    print "There is an update available for S.T.E.V.E.!"
+    print "Please go to http://bit.ly/steveupdate for"
+    print "more details."
 login = config.configvar()
 ea = login[0]
 pw = login[1]
