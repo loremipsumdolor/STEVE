@@ -13,8 +13,17 @@ login = config.configvar()
 ea = login[0]
 pw = login[1]
 imap = login[2]
-smtp = login[3]
-
+smtp = login[4]
+if login[3] == True:
+    print
+    print "WARNING: IMAP server assumed to be " + login[2] + "."
+    print "If this is incorrect, please stop S.T.E.V.E. and change the"
+    print "value 'smtpserver'."
+if login[5] == True:
+    print
+    print "WARNING: SMTP server assumed to be " + login[4] + "."
+    print "If this is incorrect, please stop S.T.E.V.E. and change the"
+    print "value 'smtpserver'."
 #Main loop
 while True:
     data = emailmod.retrieve(ea, pw, imap)

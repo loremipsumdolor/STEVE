@@ -6,12 +6,12 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-from VideoCapture import Device
+import cv
 
 def picture():
-    eye = Device()
-    eye.saveSnapshot("image.jpg", timestamp=3, boldfont=1)
-    return
+    capture = cv.CaptureFromCAM(1)
+    frame = cv.QueryFrame(capture)
+    cv.SaveImage('image.jpg', frame)
 
 if __name__ == '__main__':
     print "Not to be called directly."

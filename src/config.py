@@ -5,7 +5,7 @@ A software component of S.T.E.V.E. (Super Traversing Enigmatic Voice-commanded E
 Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
-import sys
+
 import os.path
 from ConfigParser import RawConfigParser
 from ConfigParser import Error
@@ -71,20 +71,14 @@ def configvar():
                     if parser.get(s, "imapserver") == '':
                         server = parser.get(s, "emailaddress").split("@")
                         login.append('imap.' + server[1].strip("'"))
-                        print
-                        print "WARNING: IMAP server assumed to be imap." + server[1].strip("'") + "."
-                        print "If this is incorrect, please stop S.T.E.V.E. and change the"
-                        print "value 'imapserver'."
+                        login.append(True)
                     else:
                         login.append(parser.get(s, "imapserver"))
                 if parser.has_option(s, "smtpserver"):
                     if parser.get(s, "smtpserver") == '':
                         server = parser.get(s, "emailaddress").split("@")
                         login.append('smtp.' + server[1].strip("'"))
-                        print
-                        print "WARNING: SMTP server assumed to be smtp." + server[1].strip("'") + "."
-                        print "If this is incorrect, please stop S.T.E.V.E. and change the"
-                        print "value 'smtpserver'."
+                        login.append(True)
                     else:
                         login.append(parser.get(s, "smtpserver"))
             return login
