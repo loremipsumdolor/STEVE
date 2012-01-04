@@ -9,7 +9,7 @@ Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 import cv
 
 def picture():
-    capture = cv.CaptureFromCAM(1)
+    capture = cv.CaptureFromCAM(0)
     frame = cv.QueryFrame(capture)
     cv.SaveImage('image.jpg', frame)
 

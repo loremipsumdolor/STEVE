@@ -85,43 +85,11 @@ def configvar():
 
 if __name__ == '__main__':
     print "S.T.E.V.E. Configuration Values"
-    parser = RawConfigParser()
-    fileopen = open("config.ini")
-    if fileopen.read().startswith("\xef\xbb\xbf"):
-        print
-        print "Error: File saved as Unicode."
-        print "To fix: Resave config.ini as ASCII."
-        raw_input()
-    try:
-        results = parser.read("config.ini")
-    except Error, msg:
-        print "Error: Cannot parse file."
-        print "Reason: Please see error message."
-        print msg
-    else:
-        if results == []:
-            print "Error: Could not load config.ini."
-            if not os.path.exists("config.ini"):
-                print
-                print "Reason: config.ini does not exist."
-                print "To fix: Rerun index.py."
-                raw_input()
-            else:
-                print
-                print "Reason: Unknown."
-                raw_input()
-        else:
-            sections = parser.sections()
-            sections.sort()
-            for s in sections:
-                if parser.has_option(s, "emailaddress"):
-                    print "Email Address: " + parser.get(s, "emailaddress")
-                if parser.has_option(s, "password"):
-                    #print "Password: " + parser.get(s, "password")
-                    print "Password: Not displayed for security reasons."
-                    print "To display password, please uncomment line 126 and comment lines 127-128."
-                if parser.has_option(s, "imapserver"):
-                    print "IMAP Server: " + parser.get(s, "imapserver")
-                if parser.has_option(s, "smtpserver"):
-                    print "SMTP Server: " + parser.get(s, "smtpserver")
+    login = configvar()
+    print "Email Address: " + login[0]
+    #print "Password: " + login[1]
+    print "Password: Not displayed for security reasons."
+    print "To display password, please uncomment line 90 and comment lines 91-92."
+    print "IMAP Server: " + login[2]
+    print "SMTP Server: " + login[4]
     raw_input("Press Enter to exit... (don't question it)")
