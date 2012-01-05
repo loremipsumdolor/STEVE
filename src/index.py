@@ -66,36 +66,7 @@ while True:
         else:
             emailmod.sendattach("image.jpg", None, None, eaddress)
     elif con == "whoareyou":
-        print "                           hhhhhhh     hhhhhhhhhh     hhhhhhhh                                "
-        print "                         hh       hhhhhh         hhhhhh       hh                              "
-        print "                        hhh       hhhh             hhh        hh                              "
-        print "                        hhh       hhh               hhh       hh                              "
-        print "                         hh     hh      hh     hh     hhh     hh                              "
-        print "                           hhhhhhh      MN     MN     hhhhhhhh                                "
-        print "                                hh      MN     MN     hhh                                     "
-        print "                               h                        h                                     "
-        print "                             hhh                         hhh                                  "
-        print "                           hh                              hhh                                "
-        print "                           hh                              hhh                                "
-        print "                           hh                              hhh                                "
-        print "                           hh           mmmmmmmmmh         hhh                                "
-        print "                             hh         mmmmmmmmmh       hhh                                  "
-        print "                              hh                         hh                                   "
-        print "                                hhhhh               hhhhh                                     "
-        print "                                     hhhhhhhhhhhhhhh                                          "
-        print
-        print
-        print
-        print "              ooooooo      oooooos     ooooooo      oos ooo      oooooos                      "
-        print "              oos           soos       ooo          oos ooo      oos                          "
-        print "              ooossss        oo        ooossss      oos ooo      oossss                       "
-        print "                  soo        oo        ooo          oos ooo      oos                          "
-        print "              ssssooo sss    oo    sss ooossss  sss oossooo sss  oossss  sss                  "
-        print
-        print "I am S.T.E.V.E. This stands for Super Traversing Enigmatic Voice-controlled Engine."
-        print "Most of my coding was written by Jacob Turner, the guy behind Squared Pi"
-        print "Productions. However, there's parts of me written by other people, but all of my"
-        print "code is open source, so no worries there."
+        cmdparser.whoareyou("console")
     elif con == "whoami":
         print "Your name is probably " + getpass.getuser() + "."
         print "If you did not already know this, then that is a problem."
