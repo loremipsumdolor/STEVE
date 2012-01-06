@@ -6,7 +6,8 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import feedparser, time, os.path
+import feedparser, os.path
+from time import strftime, localtime
 
 def check():
     feed = feedparser.parse('https://github.com/loremipsumdolor/S.T.E.V.E./commits/master.atom')
@@ -16,14 +17,14 @@ def check():
     clist = ccontent.split('\n')
     if clist[0].strip('<pre> m') == "README":
         check = clist[1].split('/')
-        tcheck = time.strftime("%Y-%m-%dT%H:%M:%S-08:00", time.localtime(os.path.getmtime(check[1])))
+        tcheck = strftime("%Y-%m-%dT%H:%M:%S-08:00", localtime(os.path.getmtime(check[1])))
         if cdate != tcheck:
             return 'Update'
         else:
             return
     else:
         check = clist[0].split('/')
-        tcheck = time.strftime("%Y-%m-%dT%H:%M:%S-08:00", time.localtime(os.path.getmtime(check[1])))
+        tcheck = strftime("%Y-%m-%dT%H:%M:%S-08:00", localtime(os.path.getmtime(check[1])))
         if cdate != tcheck:
             return 'Update'
         else:

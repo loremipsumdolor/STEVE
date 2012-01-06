@@ -20,6 +20,8 @@ def parse(data):
         var.append("image.jpg")
         var.append(fromemail)
         return var
+    else:
+        return "None"
 
 if __name__ == '__main__':
     print "Not to be called directly."

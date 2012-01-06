@@ -26,7 +26,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 PSF License
 -----------
 
-Recipe #360649 from ActiveState Code written by Fadly Tabrani
+S.T.E.V.E Power Management Module (pwrmgmt.py)
 Written by Fadly Tabrani
 
 PYTHON SOFTWARE FOUNDATION LICENSE VERSION 2
@@ -77,3 +77,16 @@ endorse or promote products or services of Licensee, or any third party.
 8. By copying, installing or otherwise using Recipe #360649, Licensee
 agrees to be bound by the terms and conditions of this License
 Agreement.
+
+Scott Hillman License
+---------------------
+S.T.E.V.E. Google Voice API (gvoice.py)
+Written by Scott Hillman
+
+http://www.everydayscripting.blogspot.com
+
+This module comes as is an with no warranty.
+You are free to use, modify and distribute this
+code however you wish, but I ask that if you post
+it anywhere, you at least make reference to me and
+my blog where you acquired it.

@@ -6,7 +6,10 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import emailmod, time, emailparser, config, update, threading, cmdparser, getpass, sys
+import emailmod, emailparser, config, update, threading, cmdparser
+from time import sleep
+from getpass import getuser
+from sys import exit
 
 print "S.T.E.V.E."
 ucheck = update.check()
@@ -15,7 +18,7 @@ if ucheck == 'Update':
     print "There is an update available for S.T.E.V.E.!"
     print "Please go to http://bit.ly/steveupdate for"
     print "more details."
-login = config.configvar()
+login = config.basicvar()
 class emailcheck(threading.Thread):
     def __init__(self, login):
         threading.Thread.__init__(self)
@@ -44,9 +47,9 @@ class emailcheck(threading.Thread):
                     emailmod.sendattach(self.parse[1], None, None, self.parse[0])
                     print self.parse[0] + " sent to " + self.parse[1]
                 else:
-                    time.sleep(10)
+                    sleep(10)
             else:
-                time.sleep(10)
+                sleep(10)
 bg = emailcheck(login)
 bg.start()
 print
@@ -54,23 +57,35 @@ print "Type help for a list of commands."
 while True:
     con = raw_input("S.T.E.V.E. > ")
     if con == "help":
-        print "picture - takes a picture and sends it to a specified address"
+        print "picture - I'll take a picture and send it to a specified address."
         print "whoareyou - I'll tell you who I am."
         print "whoami - I'll tell you who you are."
+        print "text - I'll send a text message for you."
         print
     elif con == "picture":
         cmdparser.picture()
-        eaddress = raw_input("Email address to send to? (Press Enter for no email) > ")
+        eaddress = raw_input("Email address to send to (Press Enter for no email) > ")
         if eaddress == "":
             pass
         else:
             emailmod.sendattach("image.jpg", None, None, eaddress)
     elif con == "whoareyou":
         cmdparser.whoareyou("console")
+    elif con == "text":
+        number = raw_input("Phone number to send to (ex. 555-555-1234) > ")
+        txt = raw_input("Message to send (160 characters or less) > ")
+        if len(txt) <= 160:
+            txtmsg = cmdparser.txt(number, txt)
+            if txtmsg == "OK":
+                print "Message sent successfully."
+            else:
+                print "Message sent unsuccessfully."
+        else:
+            print "Message too long (" + str(len(txt)) + " chars)."
     elif con == "whoami":
-        print "Your name is probably " + getpass.getuser() + "."
+        print "Your name is probably " + getuser() + "."
         print "If you did not already know this, then that is a problem."
     elif con == "exit":
-        sys.exit()
+        exit()
     else:
         print "Not a vaild command."

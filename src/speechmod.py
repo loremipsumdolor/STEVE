@@ -6,10 +6,11 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import speechlib, time, cmdparser
+import speechlib, cmdparser
+from time import sleep
 
 speechlib.say("Welcome to the STEVE Interface Engine Voice Module")
-time.sleep(3)
+sleep(3)
 speechlib.say("Say help for a list of commands")
 #speechlib.say("You said %s" % input)
 while True:
@@ -19,7 +20,7 @@ while True:
         speechhelp = open('speechhelp.txt', 'r')
         for line in speechhelp:
             speechlib.say(line.strip('\n'))
-            time.sleep(1)
+            sleep(1)
     elif spk == "who are you":
         speechlib.say(cmdparser.whoareyou("speech"))
     else:
