@@ -149,6 +149,21 @@ def googlevar():
                 print "To fix: Edit value 'gpassword' in config.ini."
                 raw_input()
                 sys.exit()
+            if parser.has_option(sections[1], "gvoicenum"):
+                if parser.get(sections[1], "gvoicenum") == '5555551234':
+                    print
+                    print "Error: Default value detected."
+                    print "To fix: Edit value 'gvoicenum' in config.ini."
+                    raw_input()
+                    sys.exit()
+                else:
+                    glogin.append(parser.get(sections[1], "gvoicenum"))
+            else:
+                print
+                print "Error: Google Voice Number not found."
+                print "To fix: Edit value 'gvoicenum' in config.ini."
+                raw_input()
+                sys.exit()
             return glogin
 
 if __name__ == '__main__':

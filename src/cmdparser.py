@@ -6,9 +6,7 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-from config import googlevar
 from cv import CaptureFromCAM, QueryFrame, SaveImage
-from gvoice import GoogleVoiceLogin, TextSender
 
 def picture():
     capture = CaptureFromCAM(0)
@@ -49,17 +47,6 @@ def whoareyou(caller):
         print "code is open source, so no worries there."
     else:
         return "I am S.T.E.V.E. This stands for Super Traversing Enigmatic Voice-controlled Engine. Most of my coding was written by Jacob Turner, the guy behind Squared Pi Productions. However, there's parts of me written by other people, but all of my code is open source, so no worries there."
-
-def txt(number, txt):
-    glogin = googlevar()
-    gv_login = GoogleVoiceLogin(glogin[0], glogin[1])
-    text_sender = TextSender(gv_login)
-    text_sender.text = txt
-    text_sender.send_text(number)
-    if text_sender.response:
-        return "OK"
-    else:
-        return
 
 if __name__ == '__main__':
     print "Not to be called directly."

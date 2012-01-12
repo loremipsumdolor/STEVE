@@ -6,7 +6,8 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import imaplib, smtplib, os.path, ssl, config
+import imaplib, smtplib, os.path, ssl
+from config import basicvar
 from string import join
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEBase import MIMEBase
@@ -25,8 +26,7 @@ def retrieve(ea, pw, imap):
     if data != ['']:
         typ, msg = acct.fetch(data[0], '(RFC822)')
         a = data[0], msg[0][1]
-        b = a[1].find('steve')
-        if b != -1:
+        if a[1].find('steve') != -1:
             acct.close()
             acct.logout()
             return a[1]
@@ -41,7 +41,7 @@ def retrieve(ea, pw, imap):
         return None
 
 def send(toea, subject, text):
-    login = config.basicvar()
+    login = basicvar()
     if subject != None:
         pass
     if text != None:
@@ -62,7 +62,7 @@ def send(toea, subject, text):
     mail.quit()
 
 def sendattach(toea, subject, text, f):
-    login = config.basicvar()
+    login = basicvar()
     msg = MIMEMultipart()
     msg['From'] = login[0]
     msg['To'] = toea
