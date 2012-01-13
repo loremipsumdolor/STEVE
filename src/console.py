@@ -32,7 +32,7 @@ class console(threading.Thread):
                 if eaddress == "":
                     pass
                 else:
-                    emailmod.sendattach("image.jpg", None, None, eaddress)
+                    emailmod.sendattach(eaddress, None, None, "image.jpg")
             elif con == "whoareyou":
                 cmdparser.whoareyou("console")
             elif con == "text":
