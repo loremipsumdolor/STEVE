@@ -6,6 +6,7 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
+import os
 from cv import CaptureFromCAM, QueryFrame, SaveImage
 
 def picture():
@@ -47,6 +48,22 @@ def whoareyou(caller):
         print "code is open source, so no worries there."
     else:
         return "I am S.T.E.V.E. This stands for Super Traversing Enigmatic Voice-controlled Engine. Most of my coding was written by Jacob Turner, the guy behind Squared Pi Productions. However, there's parts of me written by other people, but all of my code is open source, so no worries there."
+
+def shutdown():
+    os = os.name()
+    if os == 'nt':
+        from win32api import InitiateSystemShutdown
+        InitiateSystemShutdown()
+    elif os == 'linux':
+        os.system('shutdown -h now')
+
+def restart():
+    os = os.name()
+    if os == 'nt':
+        from win32api import InitiateSystemShutdown
+        InitiateSystemShutdown(None, None, 0, True, True)
+    elif os == 'linux':
+        os.system('restart now')
 
 if __name__ == '__main__':
     print "Not to be called directly."

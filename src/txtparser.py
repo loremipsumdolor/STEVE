@@ -11,12 +11,15 @@ import cmdparser
 def parse(data):
     var = []
     fromnum = data[1]
-    check = data[0].find("steve picture")
-    if check != -1:
+    if data[0].find("steve picture") != -1:
         cmdparser.picture()
         var.append("image.jpg")
         var.append(fromnum)
         return var
+    elif data[0].find("steve shutdown") != -1:
+        cmdparser.shutdown()
+    elif data[0].find("steve restart") != -1:
+        cmdparser.restart()
     else:
         return "None"
 

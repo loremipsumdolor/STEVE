@@ -15,12 +15,15 @@ def parse(data):
     if type(payload) is not str:
         parsedmsg = payload[0].get_payload()
     fromemail = body["Return-Path"].strip("<>")
-    check = parsedmsg.find("steve picture")
-    if check != -1:
+    if parsedmsg.find("steve picture") != -1:
         cmdparser.picture()
         var.append("image.jpg")
         var.append(fromemail)
         return var
+    elif parsedmsg.find("steve shutdown") != -1:
+        cmdparser.shutdown()
+    elif parsedmsg.find("steve restart") != -1:
+        cmdparser.restart()
     else:
         return "None"
 
