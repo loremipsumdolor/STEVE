@@ -6,11 +6,12 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import threading, cmdparser
-import emailparser, emailmod
-import txtmod, txtparser
+import threading
+import interfaces.emailmod as emailmod
+import interfaces.txtmod as txtmod
+import parsers.emailparser as emailparser
+import parsers.txtparser as txtparser
 from time import sleep
-from getpass import getuser
 
 class emailcheck(threading.Thread):
     def __init__(self, login):
@@ -57,45 +58,3 @@ class txtcheck(threading.Thread):
                     sleep(10)
             else:
                 sleep(10)
-
-class console(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-    def run(self):
-        print
-        print "Type help for a list of commands."
-        while True:
-            con = raw_input("S.T.E.V.E. > ")
-            if con == "help":
-                print "picture - I'll take a picture and send it to a specified address."
-                print "whoareyou - I'll tell you who I am."
-                print "whoami - I'll tell you who you are."
-                print "text - I'll send a text message for you."
-                print
-            elif con == "picture":
-                cmdparser.picture()
-                eaddress = raw_input("Email address to send to (Press Enter for no email) > ")
-                if eaddress == "":
-                    pass
-                else:
-                    emailmod.sendattach("image.jpg", None, None, eaddress)
-            elif con == "whoareyou":
-                cmdparser.whoareyou("console")
-            elif con == "text":
-                number = raw_input("Phone number to send to (ex. 5555551234) > ")
-                txt = raw_input("Message to send (160 characters or less) > ")
-                if len(txt) <= 160:
-                    txtmsg = txtmod.send(number, txt)
-                    if txtmsg == "OK":
-                        print "Message sent successfully."
-                    else:
-                        print "Message sent unsuccessfully."
-                else:
-                    print "Message too long (" + str(len(txt)) + " chars)."
-            elif con == "whoami":
-                print "Your name is probably " + getuser() + "."
-                print "If you did not already know this, then that is a problem."
-            elif con == "exit":
-                exit()
-            else:
-                print "Not a vaild command."

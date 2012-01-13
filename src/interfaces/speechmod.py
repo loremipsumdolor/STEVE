@@ -6,7 +6,8 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import speechlib, cmdparser
+import lib.speechlib as speechlib
+import parsers.cmdparser as cmdparser
 from time import sleep
 
 speechlib.say("Welcome to the STEVE Interface Engine Voice Module")

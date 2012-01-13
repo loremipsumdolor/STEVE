@@ -6,7 +6,7 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import lib.BeautifulSoup as BeautifulSoup
+from lib.BeautifulSoup import BeautifulSoup as BeautifulSoup
 from config import googlevar
 from lib.gvoice import Voice
 from lib.gvoice.util import input, Message
@@ -17,7 +17,7 @@ def retrieve():
     voice.login(glogin[0], glogin[1])
     voice.sms()
     msgitems = []
-    tree = BeautifulSoup.BeautifulSoup(voice.sms.html)
+    tree = BeautifulSoup(voice.sms.html)
     conversations = tree.findAll("div",attrs={"id" : True},recursive=False)
     for conversation in conversations :
         rows = conversation.findAll(attrs={"class" : "gc-message-sms-row"})

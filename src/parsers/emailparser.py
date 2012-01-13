@@ -6,7 +6,8 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import email, cmdparser
+import email
+import parsers.cmdparser as cmdparser
 
 def parse(data):
     var = []
