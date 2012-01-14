@@ -6,7 +6,6 @@ This is the software portion of S.T.E.V.E.
 Dependencies:
 * NumPy - http://numpy.scipy.org/
 * OpenCV - http://sourceforge.net/projects/opencvlibrary/
-* FeedParser - http://packages.python.org/feedparser/
 
 INSTRUCTIONS:
 1. Edit default values in config.ini.
