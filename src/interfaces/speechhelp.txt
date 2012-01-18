@@ -1,3 +1,0 @@
-There are a number of commands the STEVE Interface Engine Voice Module understands.
-Note that these commands are not permanent, and may change.
-Saying who are you will explain what STEVE is
