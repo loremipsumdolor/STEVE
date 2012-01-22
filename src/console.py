@@ -6,7 +6,7 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import threading, sys
+import threading, sys, platform
 import interfaces.emailmod as emailmod
 import interfaces.txtmod as txtmod
 import parsers.cmdparser as cmdparser
@@ -22,12 +22,17 @@ class console(threading.Thread):
         while True:
             con = raw_input("S.T.E.V.E. > ")
             if con == "help":
+                print "info - Shows current stats on S.T.E.V.E."
                 print "picture - I'll take a picture and send it to a specified address."
                 print "whoareyou - I'll tell you who I am."
                 print "whoami - I'll tell you who you are."
                 print "text - I'll send a text message for you."
                 print "g - I'll Google that for you."
+            elif con == "info":
+                print "S.T.E.V.E. Statistics"
                 print
+                print "Operating System: " + platform.system() + " " + platform.release()
+                print "Network Name: " + platform.node()
             elif con == "picture":
                 cmdparser.picture()
                 eaddress = raw_input("Email address to send to (Press Enter for no email) > ")

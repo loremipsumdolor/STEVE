@@ -6,7 +6,7 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import os.path, sys
+import os.path, sys, inspect
 from ConfigParser import RawConfigParser
 from ConfigParser import Error
 
@@ -166,28 +166,40 @@ def googlevar():
                 sys.exit()
             return glogin
 
+def lineno():
+    return int(inspect.currentframe().f_back.f_lineno)
+
 if __name__ == '__main__':
-    print "S.T.E.V.E. Configuration Values"
     login = basicvar()
+    glogin = googlevar()
+    print "S.T.E.V.E. Configuration Values"
+    print
+    print "Basic Configuration Values"
     print "Email Address: " + login[0]
     #print "Password: " + login[1]
     print "Password: Not displayed for security reasons."
-    print "To display password, please uncomment line 152 and comment lines 153-154."
+    print "To display password, please uncomment line " + str(lineno() - 2) + " and comment lines " + str(lineno() - 1) + "-" + str(lineno()) + "."
     if login[3] == True:
+        print "IMAP Server: " + login[2]
         print "WARNING: IMAP server assumed to be " + login[2] + "."
         print "If this is incorrect, please stop S.T.E.V.E. and change the"
         print "value 'smtpserver'."
+    else:
+        print "SMTP Server: " + login[2]
     if login[5] == True:
         print "SMTP Server: " + login[4]
         print "WARNING: SMTP server assumed to be " + login[4] + "."
         print "If this is incorrect, please stop S.T.E.V.E. and change the"
         print "value 'smtpserver'."
     else:
-        print "SMTP Server: " + login[3]
-    glogin = googlevar()
+        print "SMTP Server: " + login[4]
+    print
+    print "Google Configuration Values"
     print "Google Username: " + glogin[0]
     #print "Google Password: " + glogin[1]
     print "Password: Not displayed for security reasons."
-    print "To display password, please uncomment line 170 and comment lines 171-172."
-    raw_input("Press Enter to exit... (don't question it)")
+    print "To display password, please uncomment line " + str(lineno() - 2) + " and comment lines " + str(lineno() - 1) + "-" + str(lineno()) + "."
+    print "Google Voice #: " + glogin[2]
+    print
+    raw_input("Press Enter to quit...")
     sys.exit()
