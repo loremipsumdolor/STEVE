@@ -39,15 +39,18 @@ class console(threading.Thread):
                 cmdparser.whoareyou("console")
             elif con == "text":
                 number = raw_input("Phone number to send to (ex. 5555551234) > ")
-                txt = raw_input("Message to send (160 characters or less) > ")
-                if len(txt) <= 160:
-                    txtmsg = txtmod.send(number, txt)
-                    if txtmsg == "OK":
-                        print "Message sent successfully."
+                txt = raw_input("Message to send (can be over 160 characters) > ")
+                if len(txt) > 160:
+                    print "Message is " + str(len(txt)) + " characters."
+                    q = raw_input("Would you still like to send the message (Y/n) >")
+                    if q == "y" or "yes" or "":
+                        txtmod.send(number, txt)
+                        print "Message sent."
                     else:
-                        print "Message sent unsuccessfully."
+                        print "Message not sent."
                 else:
-                    print "Message too long (" + str(len(txt)) + " chars)."
+                    txtmod.send(number, txt)
+                    print "Message sent."
             elif con == "whoami":
                 print "Your name is probably " + getuser() + "."
                 print "If you did not already know this, then that is a problem."

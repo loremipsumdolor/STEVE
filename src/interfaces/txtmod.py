@@ -44,7 +44,7 @@ def send(number, txt):
     voice = Voice()
     voice.login(glogin[0], glogin[1])
     voice.send_sms(number, txt)
-    return "OK"
+    return
 
 if __name__ == '__main__':
     print "Not to be called directly."
