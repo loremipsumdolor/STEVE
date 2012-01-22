@@ -37,8 +37,10 @@ class emailcheck(threading.Thread):
             self.data = emailmod.retrieve(self.ea, self.pw, self.imap)
             if self.data != None:
                 self.parse = emailparser.parse(self.data)
-                if self.parse[0] == "image.jpg":
-                    emailmod.sendattach(self.parse[1], None, None, self.parse[0])
+                if self.parse[0] == "attach":
+                    emailmod.sendattach(self.parse[2], None, None, self.parse[1])
+                elif self.parse[0] == "text":
+                    emailmod.send(self.parse[2], None, self.parse[1])
                 else:
                     sleep(10)
             else:
@@ -52,8 +54,15 @@ class txtcheck(threading.Thread):
             self.data = txtmod.retrieve()
             if self.data != []:
                 self.parse = txtparser.parse(self.data)
-                if self.parse[0] == "image.jpg":
+                if self.parse[0] == "image":
                     txtmod.send(self.parse[1], "Image taken successfully.")
+                elif self.parse[0] == "text":
+                    if len(self.parse[1]) > 160:
+                        txt = [''.join(x) for x in zip(*[list(self.parse[1][z::160]) for z in range(160)])]
+                        for x in txt:
+                            txtmod.send(txt[x], self.parse[2])
+                    else:
+                        txtmod.send(self.parse[1], self.parse[2])
                 else:
                     sleep(10)
             else:

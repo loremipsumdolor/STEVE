@@ -8,6 +8,7 @@ Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 
 import email
 import parsers.cmdparser as cmdparser
+import parsers.searchparser as searchparser
 
 def parse(data):
     var = []
@@ -18,6 +19,7 @@ def parse(data):
     fromemail = body["Return-Path"].strip("<>")
     if parsedmsg.find("steve picture") != -1:
         cmdparser.picture()
+        var.append("attach")
         var.append("image.jpg")
         var.append(fromemail)
         return var
@@ -25,6 +27,13 @@ def parse(data):
         cmdparser.shutdown()
     elif parsedmsg.find("steve restart") != -1:
         cmdparser.restart()
+    elif parsedmsg.find("steve g") != -1:
+        term = parsedmsg.split(" ")
+        search = searchparser.g(term[2])
+        var.append("text")
+        var.append(" ".join(search))
+        var.append(fromemail)
+        return var
     else:
         return "None"
 

@@ -6,17 +6,22 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import config, check, console
+import config, check, console, sys
 
 print "S.T.E.V.E."
 
 login = config.basicvar()
 emailbg = check.emailcheck(login)
+emailbg.daemon = True
 emailbg.start()
 print "E-mail service started!"
 txtbg = check.txtcheck()
+txtbg.daemon = True
 txtbg.start()
 print "Text service started!"
 consolebg = console.console()
 print "All systems are go!"
-consolebg.start()
+try:
+    consolebg.start()
+except SystemExit:
+    sys.exit()

@@ -6,10 +6,11 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import threading
+import threading, sys
 import interfaces.emailmod as emailmod
 import interfaces.txtmod as txtmod
 import parsers.cmdparser as cmdparser
+import parsers.searchparser as searchparser
 from getpass import getuser
 
 class console(threading.Thread):
@@ -25,6 +26,7 @@ class console(threading.Thread):
                 print "whoareyou - I'll tell you who I am."
                 print "whoami - I'll tell you who you are."
                 print "text - I'll send a text message for you."
+                print "g - I'll Google that for you."
                 print
             elif con == "picture":
                 cmdparser.picture()
@@ -49,7 +51,14 @@ class console(threading.Thread):
             elif con == "whoami":
                 print "Your name is probably " + getuser() + "."
                 print "If you did not already know this, then that is a problem."
+            elif con == "g":
+                term = raw_input("Term to search for > ")
+                res = searchparser.g(term)
+                print "Top result is:"
+                print res[0]
+                print res[1]
+                print res[2]
             elif con == "exit":
-                exit()
+                sys.exit()
             else:
                 print "Not a vaild command."

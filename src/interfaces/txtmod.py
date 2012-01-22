@@ -9,7 +9,6 @@ Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 from lib.BeautifulSoup import BeautifulSoup as BeautifulSoup
 from config import googlevar
 from lib.gvoice import Voice
-from lib.gvoice.util import input, Message
 
 def retrieve():
     glogin = googlevar()
@@ -36,7 +35,6 @@ def retrieve():
             val.append(msg[1].strip(":+"))
         else:
             pass
-    e = voice.sms().messages
     for message in voice.sms().messages:
         message.delete()
     return val
