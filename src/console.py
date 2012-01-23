@@ -11,6 +11,7 @@ import interfaces.emailmod as emailmod
 import interfaces.txtmod as txtmod
 import parsers.cmdparser as cmdparser
 import parsers.searchparser as searchparser
+import parsers.apiparser as apiparser
 from getpass import getuser
 
 class console(threading.Thread):
@@ -22,15 +23,10 @@ class console(threading.Thread):
         while True:
             con = raw_input("S.T.E.V.E. > ")
             if con == "help":
-                print "info - Shows current stats on S.T.E.V.E."
-                print "picture - I'll take a picture and send it to a specified address."
-                print "whoareyou - I'll tell you who I am."
-                print "whoami - I'll tell you who you are."
-                print "text - I'll send a text message for you."
-                print "g - I'll Google that for you."
+                consolehelp = open('consolehelp.txt', 'r')
+                for line in consolehelp:
+                    print line.strip('\n')
             elif con == "info":
-                print "S.T.E.V.E. Statistics"
-                print
                 print "Operating System: " + platform.system() + " " + platform.release()
                 print "Network Name: " + platform.node()
             elif con == "picture":
@@ -66,6 +62,10 @@ class console(threading.Thread):
                 print res[0]
                 print res[1]
                 print res[2]
+            elif con == "shorten":
+                url = raw_input("URL to shorten > ")
+                nurl = apiparser.shorten(url)
+                print nurl
             elif con == "exit":
                 sys.exit()
             else:

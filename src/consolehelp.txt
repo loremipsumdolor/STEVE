@@ -1,0 +1,7 @@
+info - Shows current stats on S.T.E.V.E.
+shorten - I'll shorten links for you using bit.ly.
+picture - I'll take a picture and send it to a specified address.
+whoareyou - I'll tell you who I am.
+whoami - I'll tell you who you are.
+text - I'll send a text message for you.
+g - I'll Google that for you.
