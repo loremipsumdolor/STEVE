@@ -70,14 +70,26 @@ class console(threading.Thread):
                 nurl = apiparser.shorten(url)
                 print nurl
             elif con == "github":
-                proj = raw_input("Name of project > ")
-                name = raw_input("Username of project owner > ")
-                info = apiparser.github(proj, name)
-                if type(info) == "list":
-                    for x in range(len(info)):
-                        print info[x]
+                type = raw_input("Project or user > ")
+                if type == "project":
+                    proj = raw_input("Name of project > ")
+                    name = raw_input("Username of project owner > ")
+                    info = apiparser.ghproj(proj, name)
+                    if isinstance(info, list) == True:
+                        for x in range(len(info)):
+                            print info[x]
+                    else:
+                        print info
+                elif type == "user":
+                    name = raw_input("Username > ")
+                    info = apiparser.ghuser(name)
+                    if isinstance(info, list) == True:
+                        for x in range(len(info)):
+                            print info[x]
+                    else:
+                        print info
                 else:
-                    print info
+                    print "Error: Not a valid selection."
             elif con == "exit":
                 sys.exit()
             else:

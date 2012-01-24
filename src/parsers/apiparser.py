@@ -19,7 +19,7 @@ def shorten(url):
         short.close()
         return con.rstrip("\n")
 
-def github(proj, user):
+def ghproj(proj, user):
     i = []
     try:
         infourl = urllib2.urlopen("https://api.github.com/repos/" + user + "/" + proj)
@@ -33,6 +33,22 @@ def github(proj, user):
     i.append("Written in: " + str(j["language"])) #Language
     i.append(str(j["watchers"]) + " watchers") #Watchers
     i.append(str(j["forks"]) + " forks") #Forks
+    return i
+
+def ghuser(user):
+    i = []
+    try:
+        infourl = urllib2.urlopen("https://api.github.com/users/" + user)
+    except:
+        return "Error: Invalid username."
+    j = json.load(infourl)
+    i.append(user + " (" + str(j["name"]) + ")") #Username (Name)
+    i.append("Email: " + str(j["email"])) #Email
+    i.append("Website/Blog: " + str(j["blog"])) #Website
+    i.append("Location: " + str(j["location"])) #Location
+    i.append("Registered on: " + str(j["created_at"].split("T")[0])) #Create date
+    i.append(str(j["public_repos"]) + " public repositories") #Repos
+    i.append(str(j["followers"]) + " followers") #Followers
     return i
 
 if __name__ == '__main__':
