@@ -9,6 +9,7 @@ Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 import email
 import parsers.cmdparser as cmdparser
 import parsers.searchparser as searchparser
+import parsers.apiparser as apiparser
 
 def parse(data):
     var = []
@@ -32,6 +33,13 @@ def parse(data):
         search = searchparser.g(term[2])
         var.append("text")
         var.append(" ".join(search))
+        var.append(fromemail)
+        return var
+    elif parsedmsg.find("steve shorten") != -1:
+        term = parsedmsg.split(" ")
+        url = apiparser.shorten(term[2])
+        var.append("text")
+        var.append(url)
         var.append(fromemail)
         return var
     else:

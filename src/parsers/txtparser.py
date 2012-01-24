@@ -6,7 +6,9 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import cmdparser, searchparser
+import parsers.cmdparser as cmdparser
+import parsers.searchparser as searchparser
+import parsers.apiparser as apiparser
 
 def parse(data):
     var = []
@@ -25,6 +27,13 @@ def parse(data):
         search = searchparser.g(term[2])
         var.append("text")
         var.append(" ".join(search))
+        var.append(fromnum)
+        return var
+    elif data[0].find("steve shorten") != -1:
+        term = data.split(" ")
+        url = apiparser.shorten(term[2])
+        var.append("text")
+        var.append(url)
         var.append(fromnum)
         return var
     else:

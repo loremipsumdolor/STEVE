@@ -6,7 +6,7 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import threading, sys, platform
+import threading, sys, platform, urllib2
 import interfaces.emailmod as emailmod
 import interfaces.txtmod as txtmod
 import parsers.cmdparser as cmdparser
@@ -29,6 +29,9 @@ class console(threading.Thread):
             elif con == "info":
                 print "Operating System: " + platform.system() + " " + platform.release()
                 print "Network Name: " + platform.node()
+                ghurl = urllib2.urlopen("https://api.github.com/")
+                x = ghurl.headers['X-RateLimit-Remaining']
+                print "GitHub Requests Remaining: " + str(x)
             elif con == "picture":
                 cmdparser.picture()
                 eaddress = raw_input("Email address to send to (Press Enter for no email) > ")
@@ -66,6 +69,15 @@ class console(threading.Thread):
                 url = raw_input("URL to shorten > ")
                 nurl = apiparser.shorten(url)
                 print nurl
+            elif con == "github":
+                proj = raw_input("Name of project > ")
+                name = raw_input("Username of project owner > ")
+                info = apiparser.github(proj, name)
+                if type(info) == "list":
+                    for x in range(len(info)):
+                        print info[x]
+                else:
+                    print info
             elif con == "exit":
                 sys.exit()
             else:
