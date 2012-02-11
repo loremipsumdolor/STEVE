@@ -14,7 +14,8 @@ def shorten(url):
         return "Error: Cannot complete function due to missing username/API key for bit.ly."
     else:
         url = url.replace(":", "%3A").replace("/", "%2F")
-        short = urllib2.urlopen("https://api-ssl.bitly.com/v3/shorten?login=" + apikeys[0] + "&apiKey=" + apikeys[1] + "&longUrl=" + url + "&format=txt")
+        bitlyurl = "https://api-ssl.bitly.com/v3/shorten?login=" + apikeys[0] + "&apiKey=" + apikeys[1] + "&longUrl=" + url + "&format=txt"
+        short = urllib2.urlopen(bitlyurl)
         con = short.read()
         short.close()
         return con.rstrip("\n")
@@ -27,10 +28,10 @@ def ghproj(proj, user):
         return "Error: Invalid project name or username."
     j = json.load(infourl)
     i.append(proj.capitalize() + " by " + user) #Name and user
-    i.append(str(j["description"])) #Description
-    i.append(str(j["homepage"])) #Homepage
-    i.append("Created on: " + str(j["created_at"].split("T")[0])) #Create date
-    i.append("Written in: " + str(j["language"])) #Language
+    i.append(j["description"]) #Description
+    i.append(j["homepage"]) #Homepage
+    i.append("Created on: " + j["created_at"].split("T")[0]) #Create date
+    i.append("Written in: " + j["language"]) #Language
     i.append(str(j["watchers"]) + " watchers") #Watchers
     i.append(str(j["forks"]) + " forks") #Forks
     return i
@@ -43,10 +44,10 @@ def ghuser(user):
         return "Error: Invalid username."
     j = json.load(infourl)
     i.append(user + " (" + str(j["name"]) + ")") #Username (Name)
-    i.append("Email: " + str(j["email"])) #Email
-    i.append("Website/Blog: " + str(j["blog"])) #Website
-    i.append("Location: " + str(j["location"])) #Location
-    i.append("Registered on: " + str(j["created_at"].split("T")[0])) #Create date
+    i.append("Email: " + j["email"]) #Email
+    i.append("Website/Blog: " + j["blog"]) #Website
+    i.append("Location: " + j["location"]) #Location
+    i.append("Registered on: " + j["created_at"].split("T")[0]) #Create date
     i.append(str(j["public_repos"]) + " public repositories") #Repos
     i.append(str(j["followers"]) + " followers") #Followers
     return i

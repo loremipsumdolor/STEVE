@@ -3,6 +3,6 @@ picture - I'll take a picture and send it to a specified address.
 whoareyou - I'll tell you who I am.
 whoami - I'll tell you who you are.
 text - I'll send a text message for you.
-g - I'll Google that for you.
+search - I'll search that for you. (using DuckDuckGo)
 shorten - I'll shorten a URL for you (requires bit.ly API username and key).
 github - I'll look up a project or user on GitHub for you.

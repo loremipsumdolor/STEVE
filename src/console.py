@@ -6,7 +6,7 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import threading, sys, platform, urllib2
+import threading, sys, platform, urllib2, os, win32clipboard, win32con
 import interfaces.emailmod as emailmod
 import interfaces.txtmod as txtmod
 import parsers.cmdparser as cmdparser
@@ -58,17 +58,23 @@ class console(threading.Thread):
             elif con == "whoami":
                 print "Your name is probably " + getuser() + "."
                 print "If you did not already know this, then that is a problem."
-            elif con == "g":
+            elif con == "search":
                 term = raw_input("Term to search for > ")
-                res = searchparser.g(term)
-                print "Top result is:"
-                print res[0]
+                res = searchparser.ddg(term)
+                print "Top result is from:" + res[0]
                 print res[1]
                 print res[2]
             elif con == "shorten":
-                url = raw_input("URL to shorten > ")
-                nurl = apiparser.shorten(url)
-                print nurl
+                url = raw_input("URL to shorten (Do not include http://) > ")
+                nurl = apiparser.shorten("http://" + url)
+                if os.name == "nt":
+                    win32clipboard.OpenClipboard()
+                    win32clipboard.EmptyClipboard()
+                    win32clipboard.SetClipboardData(win32con.CF_TEXT, nurl)
+                    win32clipboard.CloseClipboard()
+                    print "URL copied to clipboard."
+                else:
+                    print nurl
             elif con == "github":
                 type = raw_input("Project or user > ")
                 if type == "project":

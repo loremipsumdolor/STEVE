@@ -5,19 +5,14 @@ A software component of S.T.E.V.E. (Super Traversing Enigmatic Voice-commanded E
 Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
+import urllib2, json
 
-from lib.google.search import GoogleSearch, SearchError
-
-def g(term):
-    try:
-        gs = GoogleSearch(term)
-        gs.results_per_page = 1
-        results = gs.get_results()
-        var = []
-        for res in results:
-            var.append(res.title.encode("utf8"))
-            var.append(res.desc.encode("utf8"))
-            var.append(res.url.encode("utf8"))
-        return var 
-    except SearchError, e:
-        return "Search failed: %s" % e
+def ddg(term):
+    var = []
+    url = 'http://api.duckduckgo.com/?q=' + term + '&format=json'
+    search_results = urllib2.urlopen(url)
+    j = json.load(search_results)
+    var.append(j["AbstractSource"])
+    var.append(j["Definition"])
+    var.append(j["AbstractURL"])
+    return var

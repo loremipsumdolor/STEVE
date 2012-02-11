@@ -263,7 +263,7 @@ if __name__ == '__main__':
     #print "Google Password: " + glogin[1]
     print "Password: Not displayed for security reasons."
     print "To display password, please uncomment line " + str(lineno()-2) + " and comment lines " + str(lineno()-1) + "-" + str(lineno()) + "."
-    print "Google Voice #: " + glogin[2]
+    print "Google Voice #: (" + glogin[2][:3] + ") " + glogin[2][3:6] + "-" + glogin[2][-4:]
     print
     print "API Keys"
     print "bit.ly: " + str(apikeys[0]) + "/" + str(apikeys[1])

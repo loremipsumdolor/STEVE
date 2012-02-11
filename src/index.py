@@ -19,9 +19,9 @@ txtbg = check.txtcheck()
 txtbg.daemon = True
 txtbg.start()
 print "Text service started!"
-consolebg = console.console()
-print "All systems are go!"
 try:
+    consolebg = console.console()
+    print "All systems are go!"
     consolebg.start()
 except SystemExit:
     sys.exit()
