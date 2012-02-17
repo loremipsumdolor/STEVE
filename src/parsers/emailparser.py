@@ -8,7 +8,6 @@ Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 
 import email
 import parsers.cmdparser as cmdparser
-import parsers.searchparser as searchparser
 import parsers.apiparser as apiparser
 
 def parse(data):
@@ -28,9 +27,9 @@ def parse(data):
         cmdparser.shutdown()
     elif parsedmsg.find("steve restart") != -1:
         cmdparser.restart()
-    elif parsedmsg.find("steve g") != -1:
+    elif parsedmsg.find("steve search") != -1:
         term = parsedmsg.split(" ")
-        search = searchparser.g(term[2])
+        search = apiparser.ddg(term[2])
         var.append("text")
         var.append(" ".join(search))
         var.append(fromemail)

@@ -17,6 +17,11 @@ Dependencies:
 * [OpenCV](http://sourceforge.net/projects/opencvlibrary)
 * [PyWin32](http://sourceforge.net/projects/pywin32)
 
+API Keys:
+-------------
+* [bit.ly](http://bitly.com/a/your_api_key)
+* [Wunderground](http://www.wunderground.com/weather/api/)
+
 Instructions:
 -------------
 1. Edit default values in config.ini.

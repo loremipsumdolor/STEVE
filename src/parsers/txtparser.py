@@ -7,7 +7,6 @@ Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
 import parsers.cmdparser as cmdparser
-import parsers.searchparser as searchparser
 import parsers.apiparser as apiparser
 
 def parse(data):
@@ -22,9 +21,9 @@ def parse(data):
         cmdparser.shutdown()
     elif data[0].find("steve restart") != -1:
         cmdparser.restart()
-    elif data[0].find("steve g") != -1:
+    elif data[0].find("steve search") != -1:
         term = data.split(" ")
-        search = searchparser.g(term[2])
+        search = apiparser.ddg(term[2])
         var.append("text")
         var.append(" ".join(search))
         var.append(fromnum)

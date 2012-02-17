@@ -7,9 +7,9 @@ Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
 import os
-from cv import CaptureFromCAM, QueryFrame, SaveImage
 
 def picture():
+    from cv import CaptureFromCAM, QueryFrame, SaveImage
     capture = CaptureFromCAM(0)
     frame = QueryFrame(capture)
     SaveImage('image.jpg', frame)

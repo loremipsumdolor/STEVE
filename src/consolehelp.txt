@@ -6,3 +6,4 @@ text - I'll send a text message for you.
 search - I'll search that for you. (using DuckDuckGo)
 shorten - I'll shorten a URL for you (requires bit.ly API username and key).
 github - I'll look up a project or user on GitHub for you.
+weather - I'll look up the weather for you (requires Wunderground API key).

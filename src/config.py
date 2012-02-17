@@ -229,6 +229,17 @@ def apivar():
                 print "To fix: Add value 'bitlykey' to config.ini."
                 raw_input()
                 sys.exit()
+            if parser.has_option(sections[2], "wunderkey"):
+                if parser.get(sections[2], "wunderkey") == '':
+                    apivar.append(None)
+                else:
+                    apivar.append(parser.get(sections[2], "wunderkey"))
+            else:
+                print
+                print "Error: Wunderground key not found."
+                print "To fix: Add value 'wunderkey' to config.ini."
+                raw_input()
+                sys.exit()
             return apivar
 
 def lineno():
@@ -267,6 +278,7 @@ if __name__ == '__main__':
     print
     print "API Keys"
     print "bit.ly: " + str(apikeys[0]) + "/" + str(apikeys[1])
+    print "Wunderground: " + str(apikeys[2])
     print
     raw_input("Press Enter to quit...")
     sys.exit()

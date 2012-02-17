@@ -6,11 +6,10 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import threading, sys, platform, urllib2, os, win32clipboard, win32con
+import threading, sys, platform, urllib2, os
 import interfaces.emailmod as emailmod
 import interfaces.txtmod as txtmod
 import parsers.cmdparser as cmdparser
-import parsers.searchparser as searchparser
 import parsers.apiparser as apiparser
 from getpass import getuser
 
@@ -41,6 +40,12 @@ class console(threading.Thread):
                     emailmod.sendattach(eaddress, None, None, "image.jpg")
             elif con == "whoareyou":
                 cmdparser.whoareyou("console")
+            elif con == "weather":
+                city = raw_input("City > ")
+                state = raw_input("State > ")
+                cc = apiparser.weather(city, state)
+                for x in range(len(cc)):
+                    print cc[x]
             elif con == "text":
                 number = raw_input("Phone number to send to (ex. 5555551234) > ")
                 txt = raw_input("Message to send (can be over 160 characters) > ")
@@ -60,7 +65,7 @@ class console(threading.Thread):
                 print "If you did not already know this, then that is a problem."
             elif con == "search":
                 term = raw_input("Term to search for > ")
-                res = searchparser.ddg(term)
+                res = apiparser.ddg(term)
                 print "Top result is from:" + res[0]
                 print res[1]
                 print res[2]
@@ -68,6 +73,7 @@ class console(threading.Thread):
                 url = raw_input("URL to shorten (Do not include http://) > ")
                 nurl = apiparser.shorten("http://" + url)
                 if os.name == "nt":
+                    import win32clipboard, win32con
                     win32clipboard.OpenClipboard()
                     win32clipboard.EmptyClipboard()
                     win32clipboard.SetClipboardData(win32con.CF_TEXT, nurl)
