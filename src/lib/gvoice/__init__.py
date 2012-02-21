@@ -12,7 +12,7 @@ __email__ = 'justquick@gmail.com, joe@mcc4ll.us',
 __copyright__ = 'Copyright 2009, Justin Quick and Joe McCall'
 __credits__ = ['Justin Quick','Joe McCall','Jacob Feisley','John Nagle']
 __license__ = 'New BSD'
-__version__ = '0.5'
+__version__ = '0.5-1'
 
 from voice import Voice
-from util import Phone, Message, Folder
+from util import Message, Folder

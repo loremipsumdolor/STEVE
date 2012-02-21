@@ -100,61 +100,6 @@ class AttrDict(dict):
         if attr in self:
             return self[attr]
 
-class Phone(AttrDict):
-    """
-    Wrapper for phone objects used for phone specific methods
-    Attributes are:
-
-     * id: int
-     * phoneNumber: i18n phone number
-     * formattedNumber: humanized phone number string
-     * we: data dict
-     * wd: data dict
-     * verified: bool
-     * name: strign label
-     * smsEnabled: bool
-     * scheduleSet: bool
-     * policyBitmask: int
-     * weekdayTimes: list
-     * dEPRECATEDDisabled: bool
-     * weekdayAllDay: bool
-     * telephonyVerified
-     * weekendTimes: list
-     * active: bool
-     * weekendAllDay: bool
-     * enabledForOthers: bool
-     * type: int (1 - Home, 2 - Mobile, 3 - Work, 4 - Gizmo)
-
-    """
-    def __init__(self, voice, data):
-        self.voice = voice
-        super(Phone, self).__init__(data)
-
-    def enable(self,):
-        """
-        Enables this phone for usage
-        """
-        return self.__call_forwarding()
-
-    def disable(self):
-        """
-        Disables this phone
-        """
-        return self.__call_forwarding('0')
-
-    def __call_forwarding(self, enabled='1'):
-        """
-        Enables or disables this phone
-        """
-        self.voice.__validate_special_page('default_forward',
-            {'enabled':enabled, 'phoneId': self.id})
-
-    def __str__(self):
-        return self.phoneNumber
-
-    def __repr__(self):
-        return '<Phone %s>' % self.phoneNumber
-
 class Message(AttrDict):
     """
     Wrapper for all call/sms message instances stored in Google Voice

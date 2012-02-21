@@ -16,17 +16,11 @@ from time import sleep
 class emailcheck(threading.Thread):
     def __init__(self, login):
         threading.Thread.__init__(self)
-        self.ea = login[0]
-        self.pw = login[1]
-        self.imap = login[2]
         if login[3] == True:
-            self.smtp = login[4]
             print
             print "WARNING: IMAP server assumed to be " + login[2] + "."
             print "If this is incorrect, please stop S.T.E.V.E. and change the"
             print "value 'smtpserver'."
-        else:
-            self.smtp = login[3]
         if login[5] == True:
             print
             print "WARNING: SMTP server assumed to be " + login[4] + "."
@@ -34,7 +28,7 @@ class emailcheck(threading.Thread):
             print "value 'smtpserver'."
     def run(self):
         while True:
-            self.data = emailmod.retrieve(self.ea, self.pw, self.imap)
+            self.data = emailmod.retrieve()
             if self.data != None:
                 self.parse = emailparser.parse(self.data)
                 if self.parse[0] == "attach":

@@ -23,7 +23,7 @@ class console(threading.Thread):
             con = raw_input("S.T.E.V.E. > ")
             if con == "help":
                 consolehelp = open('consolehelp.txt', 'r')
-                for line in consolehelp:
+                for line in sorted(consolehelp):
                     print line.strip('\n')
             elif con == "info":
                 print "Operating System: " + platform.system() + " " + platform.release()

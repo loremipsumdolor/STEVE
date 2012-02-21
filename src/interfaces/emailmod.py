@@ -15,12 +15,19 @@ from email.MIMEText import MIMEText
 from email.Utils import formatdate
 from email import Encoders
 
-def retrieve(ea, pw, imap):
-    try:
-        acct = imaplib.IMAP4_SSL(imap)
-    except ssl.SSLError:
-        acct = imaplib.IMAP4(imap)
-    acct.login(ea, pw)
+def retrieve():
+    login = basicvar()
+    if login[2] != False:
+        try:
+            acct = imaplib.IMAP4_SSL(login[2])
+        except ssl.SSLError:
+            acct = imaplib.IMAP4(login[2])
+    else:
+        try:
+            acct = imaplib.IMAP4_SSL(login[3])
+        except ssl.SSLError:
+            acct = imaplib.IMAP4(login[3])
+    acct.login(login[0], login[1])
     acct.select()
     typ, data = acct.search(None, 'UNSEEN')
     if data != ['']:
@@ -53,10 +60,16 @@ def send(toea, subject, text):
         "",
         text
         ), "\r\n")
-    try:
-        mail = smtplib.SMTP_SSL(login[4])
-    except ssl.SSLError:
-        mail = smtplib.SMTP(login[4])
+    if login[4] != False:
+        try:
+            mail = smtplib.SMTP_SSL(login[4])
+        except ssl.SSLError:
+            mail = smtplib.SMTP(login[4])
+    else:
+        try:
+            mail = smtplib.SMTP_SSL(login[5])
+        except ssl.SSLError:
+            mail = smtplib.SMTP(login[5])       
     mail.login(login[0], login[1])
     mail.sendmail(login[0], toea, body)
     mail.quit()
@@ -74,10 +87,16 @@ def sendattach(toea, subject, text, f):
     Encoders.encode_base64(part)
     part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(f))
     msg.attach(part)
-    try:
-        mail = smtplib.SMTP_SSL(login[4])
-    except ssl.SSLError:
-        mail = smtplib.SMTP(login[4])
+    if login[4] != False:
+        try:
+            mail = smtplib.SMTP_SSL(login[4])
+        except ssl.SSLError:
+            mail = smtplib.SMTP(login[4])
+    else:
+        try:
+            mail = smtplib.SMTP_SSL(login[5])
+        except ssl.SSLError:
+            mail = smtplib.SMTP(login[5]) 
     mail.login(login[0], login[1])
     mail.sendmail(login[0], toea, msg.as_string())
     mail.close()

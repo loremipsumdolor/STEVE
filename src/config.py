@@ -29,13 +29,11 @@ def basicvar():
         if results == []:
             print "Error: Could not load config.ini."
             if not os.path.exists("config.ini"):
-                print
                 print "Reason: config.ini does not exist."
                 print "To fix: Rerun index.py."
                 raw_input()
                 sys.exit()
             else:
-                print
                 print "Reason: Unknown."
                 raw_input()
                 sys.exit()
@@ -120,12 +118,10 @@ def googlevar():
         if results == []:
             print "Error: Could not load config.ini."
             if not os.path.exists("config.ini"):
-                print
                 print "Reason: config.ini does not exist."
                 print "To fix: Rerun index.py."
                 raw_input()
             else:
-                print
                 print "Reason: Unknown."
                 raw_input()
         else:
@@ -196,12 +192,10 @@ def apivar():
         if results == []:
             print "Error: Could not load config.ini."
             if not os.path.exists("config.ini"):
-                print
                 print "Reason: config.ini does not exist."
                 print "To fix: Rerun index.py."
                 raw_input()
             else:
-                print
                 print "Reason: Unknown."
                 raw_input()
         else:
