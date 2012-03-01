@@ -6,7 +6,7 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import urllib2, config, json, string
+import urllib2, config, json, decimal
 
 def shorten(url):
     apikeys = config.apivar()
@@ -74,6 +74,15 @@ def ddg(term):
     var.append(j["AbstractSource"])
     var.append(j["Definition"])
     var.append(j["AbstractURL"])
+    return var
+
+def currency(num, output):
+    var = []
+    rates = urllib2.urlopen("https://raw.github.com/currencybot/open-exchange-rates/master/latest.json")
+    j = json.load(rates)
+    amount = decimal.Decimal(num)*decimal.Decimal(j["rates"][output])
+    var.append(j["license"])
+    var.append(str(decimal.Decimal(amount).quantize(decimal.Decimal('.01'), rounding=decimal.ROUND_DOWN)) + " " + output.upper())
     return var
 
 if __name__ == '__main__':

@@ -81,6 +81,12 @@ class console(threading.Thread):
                     print "URL copied to clipboard."
                 else:
                     print nurl
+            elif con == "currency":
+                num = raw_input("Amount > ")
+                output = raw_input("3 letter name of currency to convert to (e.g USD) > ")
+                convert = apiparser.currency(num, output)
+                for x in range(len(convert)):
+                    print convert[x]
             elif con == "github":
                 type = raw_input("Project or user > ")
                 if type == "project":
