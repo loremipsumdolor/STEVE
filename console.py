@@ -6,12 +6,13 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import threading, sys, platform, urllib2, os
+import threading, platform, urllib2, sys
 import interfaces.emailmod as emailmod
 import interfaces.txtmod as txtmod
 import parsers.cmdparser as cmdparser
 import parsers.apiparser as apiparser
 from getpass import getuser
+from config import statsvar
 
 class console(threading.Thread):
     def __init__(self):
@@ -26,11 +27,14 @@ class console(threading.Thread):
                 for line in sorted(consolehelp):
                     print line.strip('\n')
             elif con == "info":
+                stats = statsvar()
+                print "S.T.E.V.E. Info"
+                print "---------------"
+                print "Revision Number: " + stats[0]
                 print "Operating System: " + platform.system() + " " + platform.release()
                 print "Network Name: " + platform.node()
                 ghurl = urllib2.urlopen("https://api.github.com/")
-                x = ghurl.headers['X-RateLimit-Remaining']
-                print "GitHub Requests Remaining: " + str(x)
+                print "GitHub Requests Remaining: " + str(ghurl.headers['X-RateLimit-Remaining'])
             elif con == "picture":
                 cmdparser.picture()
                 eaddress = raw_input("Email address to send to (Press Enter for no email) > ")
@@ -38,6 +42,7 @@ class console(threading.Thread):
                     pass
                 else:
                     emailmod.sendattach(eaddress, None, None, "image.jpg")
+                    print "E-mail sent."
             elif con == "whoareyou":
                 cmdparser.whoareyou("console")
             elif con == "weather":
@@ -72,7 +77,7 @@ class console(threading.Thread):
             elif con == "shorten":
                 url = raw_input("URL to shorten (Do not include http://) > ")
                 nurl = apiparser.shorten("http://" + url)
-                if os.name == "nt":
+                if platform.system() == "nt":
                     import win32clipboard, win32con
                     win32clipboard.OpenClipboard()
                     win32clipboard.EmptyClipboard()

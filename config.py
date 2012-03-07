@@ -6,9 +6,8 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import os.path, sys, inspect
-from ConfigParser import RawConfigParser
-from ConfigParser import Error
+import os.path, sys, inspect, update
+from ConfigParser import RawConfigParser, Error
 
 def basicvar():
     parser = RawConfigParser()
@@ -236,6 +235,75 @@ def apivar():
                 sys.exit()
             return apivar
 
+def statsvar():
+    parser = RawConfigParser()
+    fileopen = open("config.ini")
+    if fileopen.read().startswith("\xef\xbb\xbf"):
+        print
+        print "Error: File saved as Unicode."
+        print "To fix: Resave config.ini as ASCII."
+        raw_input()
+    try:
+        results = parser.read("config.ini")
+    except Error, msg:
+        print "Error: Cannot parse file."
+        print "Reason: Please see error message."
+        print msg
+    else:
+        if results == []:
+            print "Error: Could not load config.ini."
+            if not os.path.exists("config.ini"):
+                print "Reason: config.ini does not exist."
+                print "To fix: Rerun index.py."
+                raw_input()
+            else:
+                print "Reason: Unknown."
+                raw_input()
+        else:
+            sections = parser.sections()
+            statsvar = []
+            if parser.has_option(sections[3], "commit"):
+                if parser.get(sections[3], "commit") == '':
+                    parser.set(sections[3], "commit", update.currentcommit())
+                    print "WARNING: Most recent commit was the assumed for value 'commit'."
+                    print "This can be ignored if this the first run. If not, please"
+                    print "download the newest version as soon as possible."
+                else:
+                    statsvar.append(parser.get(sections[3], "commit"))
+            else:
+                print
+                print "Error: Commit not found."
+                print "To fix: Add value 'commit' to config.ini."
+            return statsvar
+
+def changecommit(ccommit):
+    parser = RawConfigParser()
+    fileopen = open("config.ini")
+    if fileopen.read().startswith("\xef\xbb\xbf"):
+        print
+        print "Error: File saved as Unicode."
+        print "To fix: Resave config.ini as ASCII."
+        raw_input()
+    try:
+        results = parser.read("config.ini")
+    except Error, msg:
+        print "Error: Cannot parse file."
+        print "Reason: Please see error message."
+        print msg
+    else:
+        if results == []:
+            print "Error: Could not load config.ini."
+            if not os.path.exists("config.ini"):
+                print "Reason: config.ini does not exist."
+                print "To fix: Rerun index.py."
+                raw_input()
+            else:
+                raw_input("Reason: Unknown.")
+        else:
+            sections = parser.sections()
+            parser.set(sections[3], "commit", ccommit)
+            return
+
 def lineno():
     return int(inspect.currentframe().f_back.f_lineno)
 
@@ -243,6 +311,7 @@ if __name__ == '__main__':
     login = basicvar()
     glogin = googlevar()
     apikeys = apivar()
+    stats = statsvar()
     print "S.T.E.V.E. Configuration Values"
     print
     print "Basic Configuration Values"
@@ -274,5 +343,7 @@ if __name__ == '__main__':
     print "bit.ly: " + str(apikeys[0]) + "/" + str(apikeys[1])
     print "Wunderground: " + str(apikeys[2])
     print
+    print "Other Statistics"
+    print "Commit: " + statsvar[0]
     raw_input("Press Enter to quit...")
     sys.exit()

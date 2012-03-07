@@ -22,14 +22,14 @@ def parse(data):
     elif data[0].find("steve restart") != -1:
         cmdparser.restart()
     elif data[0].find("steve search") != -1:
-        term = data.split(" ")
+        term = data[0].split(" ")
         search = apiparser.ddg(term[2])
         var.append("text")
         var.append(" ".join(search))
         var.append(fromnum)
         return var
     elif data[0].find("steve shorten") != -1:
-        term = data.split(" ")
+        term = data[0].split(" ")
         url = apiparser.shorten(term[2])
         var.append("text")
         var.append(url)

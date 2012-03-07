@@ -68,8 +68,7 @@ def weather(city, state):
 
 def ddg(term):
     var = []
-    url = 'http://api.duckduckgo.com/?q=' + term + '&format=json'
-    search_results = urllib2.urlopen(url)
+    search_results = urllib2.urlopen('http://api.duckduckgo.com/?q=' + term + '&format=json')
     j = json.load(search_results)
     var.append(j["AbstractSource"])
     var.append(j["Definition"])
