@@ -12,6 +12,10 @@ print "S.T.E.V.E."
 
 ucheck = update.updatecheck()
 if ucheck == "Update":
+    print
+    print "An update is available!"
+    print "The update will be applied on exit."
+    print
     update = True
 else:
     update = False
@@ -25,13 +29,11 @@ txtbg = check.txtcheck()
 txtbg.daemon = True
 txtbg.start()
 print "Text service started!"
-try:
-    consolebg = console.console()
-    print "All systems are go!"
-    consolebg.start()
-except SystemExit:
-    if update == True:
-        os.spawnlp(os.P_NOWAIT, "python.exe", "update.py")
-        sys.exit()
-    elif update == False:
-        sys.exit()
+consolebg = console.console()
+print "All systems are go!"
+consolebg.run()
+if update == True:
+    os.spawnl(os.P_NOWAIT, "python.exe", "update.py")
+    sys.exit()
+elif update == False:
+    sys.exit()

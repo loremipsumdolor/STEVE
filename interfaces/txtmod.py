@@ -19,12 +19,12 @@ def retrieve():
     msgitems = []
     tree = BeautifulSoup(voice.sms.html)
     conversations = tree.findAll("div",attrs={"id" : True},recursive=False)
-    for conversation in conversations :
+    for conversation in conversations:
         rows = conversation.findAll(attrs={"class" : "gc-message-sms-row"})
-        for row in rows :
+        for row in rows:
             msgitem = {"id" : conversation["id"]}
             spans = row.findAll("span",attrs={"class" : True}, recursive=False)
-            for span in spans :
+            for span in spans:
                 cl = span["class"].replace('gc-message-sms-', '')
                 msgitem[cl] = (" ".join(span.findAll(text=True))).strip()
             msgitems.append(msgitem)

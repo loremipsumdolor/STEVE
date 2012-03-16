@@ -10,13 +10,16 @@ import threading, platform, urllib2, sys
 import interfaces.emailmod as emailmod
 import interfaces.txtmod as txtmod
 import parsers.cmdparser as cmdparser
-import parsers.apiparser as apiparser
 from getpass import getuser
 from config import statsvar
+from Tkinter import Tk
 
 class console(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
+        self.basic = cmdparser.basiccmd()
+        self.api = cmdparser.apicmd()
+
     def run(self):
         print
         print "Type help for a list of commands."
@@ -25,7 +28,7 @@ class console(threading.Thread):
             if con == "help":
                 consolehelp = open('consolehelp.txt', 'r')
                 for line in sorted(consolehelp):
-                    print line.strip('\n')
+                    print line.rstrip('\n')
             elif con == "info":
                 stats = statsvar()
                 print "S.T.E.V.E. Info"
@@ -34,9 +37,9 @@ class console(threading.Thread):
                 print "Operating System: " + platform.system() + " " + platform.release()
                 print "Network Name: " + platform.node()
                 ghurl = urllib2.urlopen("https://api.github.com/")
-                print "GitHub Requests Remaining: " + str(ghurl.headers['X-RateLimit-Remaining'])
+                print "GitHub Requests Remaining: " + str(ghurl.headers['X-RateLimit-Remaining']) + "/" + str(ghurl.headers['X-RateLimit-Limit'])
             elif con == "picture":
-                cmdparser.picture()
+                self.basic.picture()
                 eaddress = raw_input("Email address to send to (Press Enter for no email) > ")
                 if eaddress == "":
                     pass
@@ -44,11 +47,11 @@ class console(threading.Thread):
                     emailmod.sendattach(eaddress, None, None, "image.jpg")
                     print "E-mail sent."
             elif con == "whoareyou":
-                cmdparser.whoareyou("console")
+                self.basic.whoareyou("console")
             elif con == "weather":
                 city = raw_input("City > ")
                 state = raw_input("State > ")
-                cc = apiparser.weather(city, state)
+                cc = self.api.weather(city, state)
                 for x in range(len(cc)):
                     print cc[x]
             elif con == "text":
@@ -70,26 +73,24 @@ class console(threading.Thread):
                 print "If you did not already know this, then that is a problem."
             elif con == "search":
                 term = raw_input("Term to search for > ")
-                res = apiparser.ddg(term)
+                res = self.api.search(term)
                 print "Top result is from:" + res[0]
                 print res[1]
                 print res[2]
             elif con == "shorten":
                 url = raw_input("URL to shorten (Do not include http://) > ")
-                nurl = apiparser.shorten("http://" + url)
-                if platform.system() == "nt":
-                    import win32clipboard, win32con
-                    win32clipboard.OpenClipboard()
-                    win32clipboard.EmptyClipboard()
-                    win32clipboard.SetClipboardData(win32con.CF_TEXT, nurl)
-                    win32clipboard.CloseClipboard()
-                    print "URL copied to clipboard."
-                else:
-                    print nurl
+                nurl = self.api.shorten("http://" + url)
+                cb = Tk()
+                cb.withdraw()
+                cb.clipboard_clear()
+                cb.clipboard_append(nurl)
+                cb.destroy()
+                print nurl
+                print "URL copied to clipboard."
             elif con == "currency":
                 num = raw_input("Amount > ")
                 output = raw_input("3 letter name of currency to convert to (e.g USD) > ")
-                convert = apiparser.currency(num, output)
+                convert = self.api.currency(num, output)
                 for x in range(len(convert)):
                     print convert[x]
             elif con == "github":
@@ -97,7 +98,7 @@ class console(threading.Thread):
                 if type == "project":
                     proj = raw_input("Name of project > ")
                     name = raw_input("Username of project owner > ")
-                    info = apiparser.ghproj(proj, name)
+                    info = self.api.ghproj(proj, name)
                     if isinstance(info, list) == True:
                         for x in range(len(info)):
                             print info[x]
@@ -105,7 +106,7 @@ class console(threading.Thread):
                         print info
                 elif type == "user":
                     name = raw_input("Username > ")
-                    info = apiparser.ghuser(name)
+                    info = self.api.ghuser(name)
                     if isinstance(info, list) == True:
                         for x in range(len(info)):
                             print info[x]
@@ -114,6 +115,9 @@ class console(threading.Thread):
                 else:
                     print "Error: Not a valid selection."
             elif con == "exit":
-                sys.exit()
+                break
             else:
-                print "Not a vaild command."
+                print "Not a valid command."
+
+if __name__ == '__main__':
+    print "Not to be called directly."

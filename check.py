@@ -9,13 +9,13 @@ Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 import threading
 import interfaces.emailmod as emailmod
 import interfaces.txtmod as txtmod
-import parsers.emailparser as emailparser
-import parsers.txtparser as txtparser
+import parsers.msgparser as msgparser
 from time import sleep
 
 class emailcheck(threading.Thread):
     def __init__(self, login):
         threading.Thread.__init__(self)
+        self.msgparse = msgparser.msgparse()
         if login[3] == True:
             print
             print "WARNING: IMAP server assumed to be " + login[2] + "."
@@ -30,11 +30,15 @@ class emailcheck(threading.Thread):
         while True:
             self.data = emailmod.retrieve()
             if self.data != None:
-                self.parse = emailparser.parse(self.data)
-                if self.parse[0] == "attach":
-                    emailmod.sendattach(self.parse[2], None, None, self.parse[1])
-                elif self.parse[0] == "text":
-                    emailmod.send(self.parse[2], None, self.parse[1])
+                self.interpret = self.msgparse.interpret(self.data, "email")
+                if self.interpret != None:
+                    self.parse = self.msgparse.interpret(self.interpret[0], self.interpret[1], "email")
+                    if self.parse[0] == "attach":
+                        emailmod.sendattach(self.parse[2], None, None, self.parse[1])
+                    elif self.parse[0] == "text":
+                        emailmod.send(self.parse[2], None, self.parse[1])
+                    else:
+                        sleep(10)
                 else:
                     sleep(10)
             else:
@@ -43,21 +47,25 @@ class emailcheck(threading.Thread):
 class txtcheck(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
+        self.msgparse = msgparser.msgparse()
     def run(self):
         while True:
             self.data = txtmod.retrieve()
             if self.data != []:
-                self.parse = txtparser.parse(self.data)
-                if self.parse[0] == "image":
-                    txtmod.send(self.parse[1], "Image taken successfully.")
-                elif self.parse[0] == "text":
-                    if len(self.parse[1]) > 160:
-                        txt = [''.join(x) for x in zip(*[list(self.parse[1][z::160]) for z in range(160)])]
-                        for x in txt:
-                            txtmod.send(txt[x], self.parse[2])
+                for x in self.data:
+                    self.interpret = self.msgparse.interpret(self.data, "txt")
+                    if self.interpret != None:
+                        self.parse = self.msgparse.parse(self.interpret[0], self.interpret[1], "txt")
+                        if len(self.parse[1]) > 160:
+                            txt = [''.join(x) for x in zip(*[list(self.parse[1][z::160]) for z in range(160)])]
+                            for x in txt:
+                                txtmod.send(txt[x], self.parse[2])
+                        else:
+                            txtmod.send(self.parse[1], self.parse[2])
                     else:
-                        txtmod.send(self.parse[1], self.parse[2])
-                else:
-                    sleep(10)
+                        sleep(10)
             else:
                 sleep(10)
+
+if __name__ == '__main__':
+    print "Not to be called directly."

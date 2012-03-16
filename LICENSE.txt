@@ -6,6 +6,8 @@ MIT License
 S.T.E.V.E. Code
 Written by Squared Pi Productions/Jacob Turner
 
+Copyright (c) 2012 Jacob Turner <jturner@squaredpiproductions.com>
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights to
@@ -28,7 +30,7 @@ Beautiful Soup License
 Beautiful Soup
 Written by Leonard Richardson
 
-Copyright (c) 2004-2010, Leonard Richardson
+Copyright (c) 2004-2010 Leonard Richardson
 
 All rights reserved.
 
@@ -67,7 +69,7 @@ PyGoogleVoice (lib/gvoice)
 Written by Joe McCall & Justin Quick
 
 Copyright (c) 2009, Joe McCall & Justin Quick
-All rights reserved.
+All Rights Reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:

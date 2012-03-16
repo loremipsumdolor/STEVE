@@ -15,7 +15,6 @@ Dependencies:
 -------------
 * [NumPy](http://numpy.scipy.org)
 * [OpenCV](http://sourceforge.net/projects/opencvlibrary)
-* [PyWin32](http://sourceforge.net/projects/pywin32)
 
 API Keys:
 -------------
