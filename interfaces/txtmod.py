@@ -7,7 +7,7 @@ Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 Portions of the code by John Nagle-nagle@animats.com
 '''
 
-from lib.BeautifulSoup import BeautifulSoup as BeautifulSoup
+from lib.bs4 import *
 from config import googlevar
 from lib.gvoice import Voice
 

@@ -6,7 +6,9 @@ Device invented by Jacob Turner
 Code by Squared Pi Productions/Jacob Turner; released under the MIT license
 '''
 
-import imaplib, smtplib, os.path, ssl
+import imaplib, smtplib
+from os.path import basename
+from ssl import SSLError
 from config import basicvar
 from string import join
 from email.MIMEMultipart import MIMEMultipart
@@ -20,12 +22,12 @@ def retrieve():
     if login[2] != False:
         try:
             acct = imaplib.IMAP4_SSL(login[2])
-        except ssl.SSLError:
+        except SSLError:
             acct = imaplib.IMAP4(login[2])
     else:
         try:
             acct = imaplib.IMAP4_SSL(login[3])
-        except ssl.SSLError:
+        except SSLError:
             acct = imaplib.IMAP4(login[3])
     acct.login(login[0], login[1])
     acct.select()
@@ -63,12 +65,12 @@ def send(toea, subject, text):
     if login[4] != False:
         try:
             mail = smtplib.SMTP_SSL(login[4])
-        except ssl.SSLError:
+        except SSLError:
             mail = smtplib.SMTP(login[4])
     else:
         try:
             mail = smtplib.SMTP_SSL(login[5])
-        except ssl.SSLError:
+        except SSLError:
             mail = smtplib.SMTP(login[5])       
     mail.login(login[0], login[1])
     mail.sendmail(login[0], toea, body)
@@ -85,17 +87,17 @@ def sendattach(toea, subject, text, f):
     part = MIMEBase('application', "octet-stream")
     part.set_payload( open(f,"rb").read() )
     Encoders.encode_base64(part)
-    part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(f))
+    part.add_header('Content-Disposition', 'attachment; filename="%s"' % basename(f))
     msg.attach(part)
     if login[4] != False:
         try:
             mail = smtplib.SMTP_SSL(login[4])
-        except ssl.SSLError:
+        except SSLError:
             mail = smtplib.SMTP(login[4])
     else:
         try:
             mail = smtplib.SMTP_SSL(login[5])
-        except ssl.SSLError:
+        except SSLError:
             mail = smtplib.SMTP(login[5]) 
     mail.login(login[0], login[1])
     mail.sendmail(login[0], toea, msg.as_string())
