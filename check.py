@@ -29,18 +29,19 @@ class emailcheck(threading.Thread):
     def run(self):
         while True:
             self.data = emailmod.retrieve()
-            if self.data != None:
-                self.interpret = self.msgparse.interpret(self.data, "email")
-                if self.interpret != None:
-                    self.parse = self.msgparse.interpret(self.interpret[0], self.interpret[1], "email")
-                    if self.parse[0] == "attach":
-                        emailmod.sendattach(self.parse[2], None, None, self.parse[1])
-                    elif self.parse[0] == "text":
-                        emailmod.send(self.parse[2], None, self.parse[1])
+            if self.data != []:
+                for x in range(len(self.data)):
+                    self.interpret = self.msgparse.interpret(self.data[x], "email")
+                    if self.interpret != None:
+                        self.parse = self.msgparse.parse(self.interpret[0], self.interpret[1], "email")
+                        if self.parse[0] == "attach":
+                            emailmod.sendattach(self.parse[2], None, None, self.parse[1])
+                        elif self.parse[0] == "text":
+                            emailmod.send(self.parse[2], None, self.parse[1])
+                        else:
+                            sleep(10)
                     else:
                         sleep(10)
-                else:
-                    sleep(10)
             else:
                 sleep(10)
 
@@ -52,8 +53,8 @@ class txtcheck(threading.Thread):
         while True:
             self.data = txtmod.retrieve()
             if self.data != []:
-                for x in self.data:
-                    self.interpret = self.msgparse.interpret(self.data, "txt")
+                for x in range(len(self.data)):
+                    self.interpret = self.msgparse.interpret(self.data[x], "txt")
                     if self.interpret != None:
                         self.parse = self.msgparse.parse(self.interpret[0], self.interpret[1], "txt")
                         if len(self.parse[1]) > 160:

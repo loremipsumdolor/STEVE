@@ -11,6 +11,7 @@ from os.path import basename
 from ssl import SSLError
 from config import basicvar
 from string import join
+from email import message_from_string
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEBase import MIMEBase
 from email.MIMEText import MIMEText
@@ -32,18 +33,24 @@ def retrieve():
     acct.login(login[0], login[1])
     acct.select()
     typ, data = acct.search(None, 'UNSEEN')
+    data = str(data).strip("'[]").split(" ")
     if data != ['']:
-        typ, msg = acct.fetch(data[0], '(RFC822)')
-        a = data[0], msg[0][1]
-        if a[1].find('steve') != -1:
-            acct.close()
-            acct.logout()
-            return a[1]
-        else:
-            acct.store(data[0], '+FLAGS', '\\Seen')
-            acct.close()
-            acct.logout()
-            return None
+        msgs = []
+        for x in range(len(data)):
+            typ, msg = acct.fetch(data[x], '(RFC822)')
+            a = message_from_string(msg[0][1])
+            b = a["Return-Path"].strip("<>")
+            a = a.get_payload()
+            if type(a) is not str:
+                a = a[0].get_payload()
+            if a.find('steve') != -1:
+                msgs.append((a, b))
+                acct.store(data[x], '+FLAGS', '\\Seen')
+            else:
+                pass
+        acct.close()
+        acct.logout()
+        return msgs
     else:
         acct.close()
         acct.logout()
