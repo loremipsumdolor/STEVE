@@ -2,20 +2,22 @@
 S.T.E.V.E. Updater
 Keeps the code current
 A software component of S.T.E.V.E. (Super Traversing Enigmatic Voice-commanded Engine)
-Device invented by Jacob Turner
-Code by Squared Pi Productions/Jacob Turner; released under the MIT license
+Code and device by Jacob Turner; code released under the MIT license
 '''
 
-import urllib, urllib2, json, config
+import urllib
+import json
+import config
 
 def currentcommit():
-    clist = urllib2.urlopen("https://api.github.com/repos/loremipsumdolor/S.T.E.V.E./commits")
+    clist = urllib.urlopen("https://api.github.com/repos/loremipsumdolor/S.T.E.V.E./commits")
     j = json.load(clist)
     return j[00]['sha']
 
 def update():
+    print "Updating S.T.E.V.E. to %s..." % currentcommit()
     stats = config.statsvar()
-    clist = urllib2.urlopen("https://api.github.com/repos/loremipsumdolor/S.T.E.V.E./commits")
+    clist = urllib.urlopen("https://api.github.com/repos/loremipsumdolor/S.T.E.V.E./commits")
     jclist = json.load(clist)
     for x in jclist:
         if jclist[x]['sha'] == stats[0]:
@@ -24,7 +26,7 @@ def update():
         else:
             pass
     for x in range(commitsnum):
-        commit = urllib2.urlopen("https://api.github.com/repos/loremipsumdolor/S.T.E.V.E./commits/" + ccommit)
+        commit = urllib.urlopen("https://api.github.com/repos/loremipsumdolor/S.T.E.V.E./commits/", ccommit)
         jcommit = json.load(commit)
         for x in jcommit:
             urllib.urlretrieve(jcommit[x]["raw_url"], jcommit[x]["filename"])

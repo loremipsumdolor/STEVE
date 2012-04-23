@@ -1,10 +1,5 @@
 info - I'll show you current stats on S.T.E.V.E.
-picture - I'll take a picture and send it to a specified address.
+picture - I'll take a picture.
 whoareyou - I'll tell you who I am.
 whoami - I'll tell you who you are.
-text - I'll send a text message for you.
-search - I'll search that for you. (using DuckDuckGo)
-shorten - I'll shorten a URL for you (requires bit.ly API username and key).
-github - I'll look up a project or user on GitHub for you.
-weather - I'll look up the weather for you (requires Wunderground API key).
-currency - I'll convert a USD amount into whatever currency for you.
+text (number text) - I'll send a text message for you.

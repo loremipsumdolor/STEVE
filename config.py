@@ -2,39 +2,67 @@
 S.T.E.V.E. Configuration File Parser
 For that config.ini file
 A software component of S.T.E.V.E. (Super Traversing Enigmatic Voice-commanded Engine)
-Device invented by Jacob Turner
-Code by Squared Pi Productions/Jacob Turner; released under the MIT license
+Code and device by Jacob Turner; code released under the MIT license
 Based on http://stackoverflow.com/a/3446232 by Zimm3r
 '''
 
-import os.path, sys, inspect, update
+import os.path
+import sys
+import inspect
+import update
+from messages import errors
 from ConfigParser import RawConfigParser, Error
 
 def testconfig():
     parser = RawConfigParser()
     fileopen = open("config.ini")
-    if fileopen.read().startswith("\xef\xbb\xbf"):
-        print
-        print "Error: File saved as Unicode."
-        raw_input("To fix: Resave config.ini as ASCII.")
-        sys.exit()
+    if fileopen.read().startswith("\xfe\xff\x00"):
+        raise errors.ConfigUni()
     try:
         results = parser.read("config.ini")
     except Error, msg:
-        print "Error: Cannot parse file."
-        print "Reason: Please see error message."
-        raw_input(msg)
-        sys.exit()
+        print msg
+        raise errors.CantParseConfig()
     else:
         if results == []:
             print "Error: Could not load config.ini."
             if not os.path.exists("config.ini"):
-                print "Reason: config.ini does not exist."
-                raw_input("To fix: Rerun index.py.")
-                sys.exit()
+                configlist = ["[Basic]", "emailaddress = test@example.com",
+                              "password = password", "smtpserver =",
+                              "imapserver =", "[Google]",
+                              "gusername = test@gmail.com",
+                              "gpassword = gpassword",
+                              "gvoicenum = 5555551234",
+                              "[Settings]", "autoupdate = False",
+                              "#DO NOT EDIT BEYOND THIS LINE", "[Stats]",
+                              "commit ="]
+                with open("config.ini", "w") as config:
+                    for x in configlist:
+                        config.write(x)
+                print "Reason: config.ini did not exist."
+                raise errors.NewConfig()
             else:
-                raw_input("Reason: Unknown.")
-                sys.exit()
+                raise errors.Unknown()
+        else:
+            return
+
+def testotherconfig(conf):
+    parser = RawConfigParser()
+    fileopen = open("plugins/%s" % conf)
+    if fileopen.read().startswith("\xfe\xff\x00"):
+        raise errors.ConfigUni()
+    try:
+        results = parser.read("plugins/%s" % conf)
+    except Error, msg:
+        print msg
+        raise errors.CantParseConfig()
+    else:
+        if results == []:
+            print "Error: Could not load %s." % conf
+            if not os.path.exists("plugins/%s" % conf):
+                raise errors.FileNotFound()
+            else:
+                raise errors.Unknown()
         else:
             return
 
@@ -46,30 +74,18 @@ def basicvar():
     login = []
     if parser.has_option(sections[0], "emailaddress"):
         if parser.get(sections[0], "emailaddress") == 'test@example.com':
-            print
-            print "Error: Default value detected."
-            raw_input("To fix: Edit value 'emailaddress' in config.ini.")
-            sys.exit()
+            raise errors.DefaultValue("emailaddress")
         else:
             login.append(parser.get(sections[0], "emailaddress"))
     else:
-        print
-        print "Error: Email address not found."
-        raw_input("To fix: Add value 'emailaddress' to config.ini.")
-        sys.exit()
+        raise errors.ValueNotFound("emailaddress")
     if parser.has_option(sections[0], "password"):
         if parser.get(sections[0], "password") == 'password':
-            print
-            print "Error: Default value detected."
-            raw_input("To fix: Edit value 'password' in config.ini.")
-            sys.exit()
+            raise errors.DefaultValue("password")
         else:
             login.append(parser.get(sections[0], "password"))
     else:
-        print
-        print "Error: Password not found."
-        raw_input("To fix: Add value 'password' to config.ini.")
-        sys.exit()
+        raise errors.ValueNotFound("password")
     if parser.has_option(sections[0], "imapserver"):
         if parser.get(sections[0], "imapserver") == '':
             server = parser.get(sections[0], "emailaddress").split("@")
@@ -79,10 +95,7 @@ def basicvar():
             login.append(parser.get(sections[0], "imapserver"))
             login.append(False)
     else:
-        print
-        print "Error: IMAP server not found."
-        raw_input("To fix: Add value 'imapserver' to config.ini.")
-        sys.exit()
+        raise errors.ValueNotFound("imapserver")
     if parser.has_option(sections[0], "smtpserver"):
         if parser.get(sections[0], "smtpserver") == '':
             server = parser.get(sections[0], "emailaddress").split("@")
@@ -92,10 +105,7 @@ def basicvar():
             login.append(parser.get(sections[0], "smtpserver"))
             login.append(False)
     else:
-        print
-        print "Error: SMTP server not found."
-        raw_input("To fix: Add value 'smtpserver' to config.ini.")
-        sys.exit()
+        raise errors.ValueNotFound("smtpserver")
     return login
 
 def googlevar():
@@ -106,82 +116,38 @@ def googlevar():
     glogin = []
     if parser.has_option(sections[1], "gusername"):
         if parser.get(sections[1], "gusername") == 'test@gmail.com':
-            print
-            print "Error: Default value detected."
-            raw_input("To fix: Edit value 'username' in config.ini.")
-            sys.exit()
+            raise errors.DefaultValue("gusername")
         else:
             glogin.append(parser.get(sections[1], "gusername"))
     else:
-        print
-        print "Error: Google username not found."
-        raw_input("To fix: Add value 'gusername' to config.ini.")
-        sys.exit()
+        raise errors.ValueNotFound("gusername")
+
     if parser.has_option(sections[1], "gpassword"):
         if parser.get(sections[1], "gpassword") == 'gpassword':
-            print
-            print "Error: Default value detected."
-            raw_input("To fix: Edit value 'gpassword' in config.ini.")
-            sys.exit()
+            raise errors.DefaultValue("gpassword")
         else:
             glogin.append(parser.get(sections[1], "gpassword"))
     else:
-        print
-        print "Error: Google password not found."
-        raw_input("To fix: Add value 'gpassword' to config.ini.")
-        sys.exit()
+        raise errors.ValueNotFound("gpassword")
+
     if parser.has_option(sections[1], "gvoicenum"):
         if parser.get(sections[1], "gvoicenum") == '5555551234':
-            print
-            print "Error: Default value detected."
-            raw_input("To fix: Edit value 'gvoicenum' in config.ini.")
-            sys.exit()
+            raise errors.DefaultValue("gvoicenum")
         else:
             glogin.append(parser.get(sections[1], "gvoicenum"))
     else:
-        print
-        print "Error: Google Voice Number not found."
-        raw_input("To fix: Add value 'gvoicenum' to config.ini.")
-        sys.exit()
+        raise errors.ValueNotFound("gvoicenum")
     return glogin
 
-def apivar():
+def settingsvar():
     testconfig()
     parser = RawConfigParser()
     results = parser.read("config.ini")
     sections = parser.sections()
-    apivar = []
-    if parser.has_option(sections[2], "bitlyusername"):
-        if parser.get(sections[2], "bitlyusername") == '':
-            apivar.append(None)
-        else:
-            apivar.append(parser.get(sections[2], "bitlyusername"))
-    else:
-        print
-        print "Error: bit.ly username not found."
-        raw_input("To fix: Add value 'bitlyusername' to config.ini.")
-        sys.exit()
-    if parser.has_option(sections[2], "bitlykey"):
-        if parser.get(sections[2], "bitlykey") == '':
-            apivar.append(None)
-        else:
-            apivar.append(parser.get(sections[2], "bitlykey"))
-    else:
-        print
-        print "Error: bit.ly key not found."
-        raw_input("To fix: Add value 'bitlykey' to config.ini.")
-        sys.exit()
-    if parser.has_option(sections[2], "wunderkey"):
-        if parser.get(sections[2], "wunderkey") == '':
-                apivar.append(None)
-        else:
-            apivar.append(parser.get(sections[2], "wunderkey"))
-    else:
-        print
-        print "Error: Wunderground key not found."
-        raw_input("To fix: Add value 'wunderkey' to config.ini.")
-        sys.exit()
-    return apivar
+    settings = []
+    if parser.has_option(sections[2], "autoupdate"):
+        settings.append(parser.getboolean(sections[2], "autoupdate"))
+    return settings
 
 def statsvar():
     testconfig()
@@ -192,17 +158,30 @@ def statsvar():
     if parser.has_option(sections[3], "commit"):
         if parser.get(sections[3], "commit") == '':
             parser.set(sections[3], "commit", update.currentcommit())
-            print "WARNING: Most recent commit was the assumed for value 'commit'."
+            print "WARNING: Most recent commit was assumed for value 'commit'."
             print "This can be ignored if this the first run. If not, please"
             print "download the newest version as soon as possible."
         else:
             statsvar.append(parser.get(sections[3], "commit"))
     else:
-        print
-        print "Error: Commit not found."
-        raw_input("To fix: Add value 'commit' to config.ini.")
-        sys.exit()
+        raise errors.ValueNotFound("commit")
     return statsvar
+
+def othersvar(conf, values):
+    testotherconfig(conf)
+    parser = RawConfigParser()
+    results = parser.read("plugins/%s" % conf)
+    sections = parser.sections()
+    othersvar = []
+    for x in range(len(values)):
+        if parser.has_option(sections[0], values[x]):
+            if parser.get(sections[0], values[x]) == '':
+                othersvar.append(None)
+            else:
+                othersvar.append(parser.get(sections[0], values[x]))
+        else:
+            raise errors.ValueNotFound(values[x])
+    return othersvar
 
 def changecommit(ccommit):
     testconfig()
@@ -213,12 +192,11 @@ def changecommit(ccommit):
     return
 
 def lineno():
-    return int(inspect.currentframe().f_back.f_lineno)
+    return inspect.currentframe().f_back.f_lineno
 
 if __name__ == '__main__':
     login = basicvar()
     glogin = googlevar()
-    apikeys = apivar()
     stats = statsvar()
     print "S.T.E.V.E. Configuration Values"
     print
@@ -226,7 +204,8 @@ if __name__ == '__main__':
     print "Email Address: " + login[0]
     #print "Password: " + login[1]
     print "Password: Not displayed for security reasons."
-    print "To display password, please uncomment line " + str(lineno()-2) + " and comment lines " + str(lineno()-1) + "-" + str(lineno()) + "."
+    print "To display password, uncomment line %s" % str(lineno()-2)
+    print "and comment lines %s-%s." % (str(lineno()-1), str(lineno()))
     if login[3] == True:
         print "IMAP Server: " + login[2]
         print "Warning: IMAP server is an assumed value."
@@ -244,14 +223,12 @@ if __name__ == '__main__':
     print "Google Username: " + glogin[0]
     #print "Google Password: " + glogin[1]
     print "Password: Not displayed for security reasons."
-    print "To display password, please uncomment line " + str(lineno()-2) + " and comment lines " + str(lineno()-1) + "-" + str(lineno()) + "."
-    print "Google Voice #: (" + glogin[2][:3] + ") " + glogin[2][3:6] + "-" + glogin[2][-4:]
-    print
-    print "API Keys"
-    print "bit.ly: " + str(apikeys[0]) + "/" + str(apikeys[1])
-    print "Wunderground: " + str(apikeys[2])
+    print "To display password, uncomment line %s" % str(lineno()-2)
+    print "and comment lines %s-%s." % (str(lineno()-1), str(lineno()))
+    print "Google Voice #: (%s) %s-%s" % (glogin[2][:3], glogin[2][3:6],
+    glogin[2][-4:])
     print
     print "Other Statistics"
-    print "Commit: " + statsvar[0]
+    print "Commit: " + stats[0]
     raw_input("Press Enter to quit...")
     sys.exit()

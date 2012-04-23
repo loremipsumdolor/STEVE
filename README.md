@@ -16,11 +16,6 @@ Dependencies:
 * [NumPy](http://numpy.scipy.org)
 * [OpenCV](http://sourceforge.net/projects/opencvlibrary)
 
-API Keys:
--------------
-* [bit.ly](http://bitly.com/a/your_api_key)
-* [Wunderground](http://www.wunderground.com/weather/api/)
-
 Instructions:
 -------------
 1. Edit default values in config.ini.
@@ -30,5 +25,5 @@ Instructions:
 You can keep track of S.T.E.V.E.'s progress on its [website], as well as on [GitHub].
 
 [STEVEImg]: http://stevebyspp.com/img/steve2.png
-[GitHub]: https://github.com/loremipsumdolor/S.T.E.V.E.
+[GitHub]: https://github.com/loremipsumdolor/STEVE
 [website]: http://stevebyspp.com

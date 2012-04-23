@@ -2,9 +2,8 @@
 S.T.E.V.E. Texting Module
 The primary text message exchange
 A software component of S.T.E.V.E. (Super Traversing Enigmatic Voice-commanded Engine)
-Device invented by Jacob Turner
-Code by Squared Pi Productions/Jacob Turner; released under the MIT license
-Portions of the code by John Nagle-nagle@animats.com
+Code and device by Jacob Turner; code released under the MIT license
+Portions of retrieve() by John Nagle - nagle@animats.com
 '''
 
 from lib.bs4 import *
@@ -18,27 +17,23 @@ def retrieve():
     voice.sms()
     msgitems = []
     tree = BeautifulSoup(voice.sms.html)
-    conversations = tree.findAll("div",attrs={"id" : True},recursive=False)
+    conversations = tree.findAll("div",attrs={"id":True},recursive=False)
     for conversation in conversations:
-        rows = conversation.findAll(attrs={"class" : "gc-message-sms-row"})
+        rows = conversation.findAll(attrs={"class":"gc-message-sms-row"})
         for row in rows:
-            msgitem = {"id" : conversation["id"]}
-            spans = row.findAll("span",attrs={"class" : True}, recursive=False)
+            msgitem = {"id":conversation["id"]}
+            spans = row.findAll("span", attrs={"class":True}, recursive=False)
             for span in spans:
                 cl = span["class"].replace('gc-message-sms-', '')
                 msgitem[cl] = (" ".join(span.findAll(text=True))).strip()
             msgitems.append(msgitem)
-    val = []
+    msgs = []
     for x in range(len(msgitems)):
         msg = msgitems[x].values()
-        if msg[0].find('steve') != -1:
-            val.append(msg[0])
-            val.append(msg[1].strip(":+"))
-        else:
-            pass
-    for message in voice.sms().messages:
-        message.delete()
-    return val
+        if msg[0].find('steve') != -1: msgs.append((msg[0], msg[1].strip(":+")))
+        else: pass
+    for message in voice.sms().messages: message.delete()
+    return msgs
 
 def send(number, txt):
     glogin = googlevar()

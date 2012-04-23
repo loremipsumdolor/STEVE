@@ -9,7 +9,7 @@ Written by Squared Pi Productions/Jacob Turner
 Beautiful Soup
 Written by Leonard Richardson
 
-Copyright (c) 2012 Jacob Turner <jturner@squaredpiproductions.com>
+Copyright (c) 2012 Jacob Turner
 Copyright (c) 2004-2012 Leonard Richardson
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

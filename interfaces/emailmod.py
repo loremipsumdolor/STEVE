@@ -2,40 +2,35 @@
 S.T.E.V.E. Email Module
 The primary Email message exchange
 A software component of S.T.E.V.E. (Super Traversing Enigmatic Voice-commanded Engine)
-Device invented by Jacob Turner
-Code by Squared Pi Productions/Jacob Turner; released under the MIT license
+Code and device by Jacob Turner; code released under the MIT license
 '''
 
-import imaplib, smtplib
+import imaplib
+import smtplib
 from os.path import basename
 from ssl import SSLError
 from config import basicvar
 from string import join
-from email import message_from_string
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEBase import MIMEBase
 from email.MIMEText import MIMEText
 from email.Utils import formatdate
-from email import Encoders
+from email import Encoders, message_from_string
 
 def retrieve():
     login = basicvar()
     if login[2] != False:
-        try:
-            acct = imaplib.IMAP4_SSL(login[2])
-        except SSLError:
-            acct = imaplib.IMAP4(login[2])
+        try: acct = imaplib.IMAP4_SSL(login[2])
+        except SSLError: acct = imaplib.IMAP4(login[2])
     else:
-        try:
-            acct = imaplib.IMAP4_SSL(login[3])
-        except SSLError:
-            acct = imaplib.IMAP4(login[3])
+        try: acct = imaplib.IMAP4_SSL(login[3])
+        except SSLError: acct = imaplib.IMAP4(login[3])
     acct.login(login[0], login[1])
     acct.select()
     typ, data = acct.search(None, 'UNSEEN')
     data = str(data).strip("'[]").split(" ")
+    msgs = []
     if data != ['']:
-        msgs = []
         for x in range(len(data)):
             typ, msg = acct.fetch(data[x], '(RFC822)')
             a = message_from_string(msg[0][1])
@@ -54,14 +49,12 @@ def retrieve():
     else:
         acct.close()
         acct.logout()
-        return None
+        return msgs
 
 def send(toea, subject, text):
     login = basicvar()
-    if subject != None:
-        pass
-    if text != None:
-        pass
+    if subject != None: pass
+    if text != None: pass
     body = join((
         "From: %s" % login[0],
         "To: %s" % toea,
@@ -94,7 +87,8 @@ def sendattach(toea, subject, text, f):
     part = MIMEBase('application', "octet-stream")
     part.set_payload( open(f,"rb").read() )
     Encoders.encode_base64(part)
-    part.add_header('Content-Disposition', 'attachment; filename="%s"' % basename(f))
+    part.add_header('Content-Disposition',
+                    'attachment; filename="%s"' % basename(f))
     msg.attach(part)
     if login[4] != False:
         try:
