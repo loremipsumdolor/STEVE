@@ -1,4 +1,3 @@
-[![][STEVEImg]][website]
 The Super Traversing Enigmatic Voice-controlled Engine
 ======================================================
 
@@ -22,8 +21,7 @@ Instructions:
 2. Run index.py.
 3. There is none.
 
-You can keep track of S.T.E.V.E.'s progress on its [website], as well as on [GitHub].
+You can keep track of S.T.E.V.E.'s progress on my [website], as well as on [GitHub].
 
-[STEVEImg]: http://stevebyspp.com/img/steve2.png
 [GitHub]: https://github.com/loremipsumdolor/STEVE
-[website]: http://stevebyspp.com
+[website]: http://www.squaredpi.com
