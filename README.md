@@ -5,10 +5,8 @@ This is the software portion of S.T.E.V.E.
 
 About:
 ------
-S.T.E.V.E. (the Super Traversing Enigmatic Voice-controlled Engine) is a part-computer, part-robot (mostly part-computer) project
-that I've been working on for the past few months. Recently, I've gotten some of the code written, primarily the researching and
-updating parts (the former somewhat published, the latter not at all). For the most part, the hardware is non-existant, except for
-the basic motor control.
+S.T.E.V.E. (the Super Traversing Enigmatic Voice-controlled Engine) was a part-computer, part-robot (mostly part-computer) project
+that I worked on while I was in seventh grade. This project is currently dormant, to be potentially revisited someday.
 
 Dependencies:
 -------------
@@ -21,7 +19,8 @@ Instructions:
 2. Run index.py.
 3. There is none.
 
-You can keep track of S.T.E.V.E.'s progress on my [website], as well as on [GitHub].
+You can keep track of S.T.E.V.E.'s progress on GitHub.
 
-[GitHub]: https://github.com/loremipsumdolor/STEVE
-[website]: http://www.squaredpi.com
+**S.T.E.V.E.** was coded by [Jacob Turner], who releases this code under the MIT license.
+
+[Jacob Turner]: http://jacobturner.me
